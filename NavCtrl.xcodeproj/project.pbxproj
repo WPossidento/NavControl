@@ -23,6 +23,25 @@
 		48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A656E518163C1B00746D36 /* CompanyViewController.xib */; };
 		48A656EB18163F8700746D36 /* ProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A656E918163F8700746D36 /* ProductViewController.m */; };
 		48A656EE1816468000746D36 /* Sunflower.gif in Resources */ = {isa = PBXBuildFile; fileRef = 48A656ED1816468000746D36 /* Sunflower.gif */; };
+		B39826E51C6147DE00871814 /* microsoft.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826E41C6147DE00871814 /* microsoft.png */; };
+		B39826EB1C614E8700871814 /* apple_s.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826E81C614E8700871814 /* apple_s.png */; };
+		B39826EC1C614E8700871814 /* samsung_s.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826E91C614E8700871814 /* samsung_s.png */; };
+		B39826ED1C614E8700871814 /* vertu_s.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826EA1C614E8700871814 /* vertu_s.png */; };
+		B39826EF1C61539A00871814 /* ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826EE1C61539A00871814 /* ipad.png */; };
+		B39826F11C61541B00871814 /* ipod.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826F01C61541B00871814 /* ipod.png */; };
+		B39826F31C61548D00871814 /* iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826F21C61548D00871814 /* iphone.png */; };
+		B39826F71C6156C500871814 /* note.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826F41C6156C500871814 /* note.png */; };
+		B39826F81C6156C500871814 /* s4.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826F51C6156C500871814 /* s4.png */; };
+		B39826F91C6156C500871814 /* tab.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826F61C6156C500871814 /* tab.png */; };
+		B39826FD1C61584E00871814 /* lumia950xl.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826FC1C61584E00871814 /* lumia950xl.png */; };
+		B39827001C6158BD00871814 /* lumia550.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826FE1C6158BD00871814 /* lumia550.png */; };
+		B39827011C6158BD00871814 /* lumia1520.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826FF1C6158BD00871814 /* lumia1520.png */; };
+		B39827041C6159B800871814 /* signature.png in Resources */ = {isa = PBXBuildFile; fileRef = B39827031C6159B800871814 /* signature.png */; };
+		B39827071C615AFA00871814 /* aster.png in Resources */ = {isa = PBXBuildFile; fileRef = B39827051C615AFA00871814 /* aster.png */; };
+		B39827081C615AFA00871814 /* stouch.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = B39827061C615AFA00871814 /* stouch.jpeg */; };
+		B39827111C61629400871814 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B398270F1C61629400871814 /* WebViewController.m */; };
+		B39827121C61629400871814 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B39827101C61629400871814 /* WebViewController.xib */; };
+		B39827151C617AE200871814 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B39827131C617AE200871814 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +77,27 @@
 		48A656E818163F8700746D36 /* ProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductViewController.h; path = ../ProductViewController.h; sourceTree = "<group>"; };
 		48A656E918163F8700746D36 /* ProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProductViewController.m; path = ../ProductViewController.m; sourceTree = "<group>"; };
 		48A656ED1816468000746D36 /* Sunflower.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Sunflower.gif; sourceTree = "<group>"; };
+		B39826E41C6147DE00871814 /* microsoft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = microsoft.png; sourceTree = "<group>"; };
+		B39826E81C614E8700871814 /* apple_s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple_s.png; sourceTree = "<group>"; };
+		B39826E91C614E8700871814 /* samsung_s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = samsung_s.png; sourceTree = "<group>"; };
+		B39826EA1C614E8700871814 /* vertu_s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vertu_s.png; sourceTree = "<group>"; };
+		B39826EE1C61539A00871814 /* ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ipad.png; sourceTree = "<group>"; };
+		B39826F01C61541B00871814 /* ipod.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ipod.png; sourceTree = "<group>"; };
+		B39826F21C61548D00871814 /* iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone.png; sourceTree = "<group>"; };
+		B39826F41C6156C500871814 /* note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note.png; sourceTree = "<group>"; };
+		B39826F51C6156C500871814 /* s4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = s4.png; sourceTree = "<group>"; };
+		B39826F61C6156C500871814 /* tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab.png; sourceTree = "<group>"; };
+		B39826FC1C61584E00871814 /* lumia950xl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lumia950xl.png; sourceTree = "<group>"; };
+		B39826FE1C6158BD00871814 /* lumia550.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lumia550.png; sourceTree = "<group>"; };
+		B39826FF1C6158BD00871814 /* lumia1520.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lumia1520.png; sourceTree = "<group>"; };
+		B39827031C6159B800871814 /* signature.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = signature.png; sourceTree = "<group>"; };
+		B39827051C615AFA00871814 /* aster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aster.png; sourceTree = "<group>"; };
+		B39827061C615AFA00871814 /* stouch.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = stouch.jpeg; sourceTree = "<group>"; };
+		B398270E1C61629400871814 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		B398270F1C61629400871814 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		B39827101C61629400871814 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		B39827131C617AE200871814 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		B39827141C617AE200871814 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/PrivateFrameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B39827151C617AE200871814 /* WebKit.framework in Frameworks */,
 				48A656B718163BF200746D36 /* CoreGraphics.framework in Frameworks */,
 				48A656B918163BF200746D36 /* UIKit.framework in Frameworks */,
 				48A656B518163BF200746D36 /* Foundation.framework in Frameworks */,
@@ -98,6 +139,7 @@
 			children = (
 				48A656E318163C1B00746D36 /* CompanyViewController.h */,
 				48A656E418163C1B00746D36 /* CompanyViewController.m */,
+				48A656E518163C1B00746D36 /* CompanyViewController.xib */,
 			);
 			name = ParentViewController;
 			sourceTree = "<group>";
@@ -133,6 +175,8 @@
 		48A656B318163BF200746D36 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B39827131C617AE200871814 /* WebKit.framework */,
+				B39827141C617AE200871814 /* WebKit.framework */,
 				48A656B418163BF200746D36 /* Foundation.framework */,
 				48A656B618163BF200746D36 /* CoreGraphics.framework */,
 				48A656B818163BF200746D36 /* UIKit.framework */,
@@ -147,8 +191,8 @@
 				483796CB1BCBF7A00062D5AB /* AppDelegate */,
 				483796CC1BCBF7C70062D5AB /* ParentViewController */,
 				483796CD1BCBF7EB0062D5AB /* ProductViewController */,
+				B398270D1C615FDE00871814 /* WebViewController */,
 				48A656C618163BF200746D36 /* Images.xcassets */,
-				48A656E518163C1B00746D36 /* CompanyViewController.xib */,
 				48A656BB18163BF200746D36 /* Supporting Files */,
 			);
 			path = NavCtrl;
@@ -157,6 +201,10 @@
 		48A656BB18163BF200746D36 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B39826FA1C6157F400871814 /* samsung */,
+				B39826FB1C61582500871814 /* apple */,
+				B39827021C6158C100871814 /* microsoft */,
+				B39827091C615AFE00871814 /* vertu */,
 				48A656ED1816468000746D36 /* Sunflower.gif */,
 				48A656BC18163BF200746D36 /* NavCtrl-Info.plist */,
 				48A656BD18163BF200746D36 /* InfoPlist.strings */,
@@ -182,6 +230,60 @@
 				48A656D618163BF200746D36 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B39826FA1C6157F400871814 /* samsung */ = {
+			isa = PBXGroup;
+			children = (
+				B39826E91C614E8700871814 /* samsung_s.png */,
+				B39826F41C6156C500871814 /* note.png */,
+				B39826F51C6156C500871814 /* s4.png */,
+				B39826F61C6156C500871814 /* tab.png */,
+			);
+			name = samsung;
+			sourceTree = "<group>";
+		};
+		B39826FB1C61582500871814 /* apple */ = {
+			isa = PBXGroup;
+			children = (
+				B39826F21C61548D00871814 /* iphone.png */,
+				B39826F01C61541B00871814 /* ipod.png */,
+				B39826E81C614E8700871814 /* apple_s.png */,
+				B39826EE1C61539A00871814 /* ipad.png */,
+			);
+			name = apple;
+			sourceTree = "<group>";
+		};
+		B39827021C6158C100871814 /* microsoft */ = {
+			isa = PBXGroup;
+			children = (
+				B39826E41C6147DE00871814 /* microsoft.png */,
+				B39826FC1C61584E00871814 /* lumia950xl.png */,
+				B39826FE1C6158BD00871814 /* lumia550.png */,
+				B39826FF1C6158BD00871814 /* lumia1520.png */,
+			);
+			name = microsoft;
+			sourceTree = "<group>";
+		};
+		B39827091C615AFE00871814 /* vertu */ = {
+			isa = PBXGroup;
+			children = (
+				B39826EA1C614E8700871814 /* vertu_s.png */,
+				B39827031C6159B800871814 /* signature.png */,
+				B39827051C615AFA00871814 /* aster.png */,
+				B39827061C615AFA00871814 /* stouch.jpeg */,
+			);
+			name = vertu;
+			sourceTree = "<group>";
+		};
+		B398270D1C615FDE00871814 /* WebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B398270E1C61629400871814 /* WebViewController.h */,
+				B398270F1C61629400871814 /* WebViewController.m */,
+				B39827101C61629400871814 /* WebViewController.xib */,
+			);
+			name = WebViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,10 +365,27 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B39826F81C6156C500871814 /* s4.png in Resources */,
+				B39827081C615AFA00871814 /* stouch.jpeg in Resources */,
+				B39827001C6158BD00871814 /* lumia550.png in Resources */,
+				B39827121C61629400871814 /* WebViewController.xib in Resources */,
 				48A656EE1816468000746D36 /* Sunflower.gif in Resources */,
 				48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */,
+				B39826F11C61541B00871814 /* ipod.png in Resources */,
+				B39826E51C6147DE00871814 /* microsoft.png in Resources */,
+				B39826F31C61548D00871814 /* iphone.png in Resources */,
 				48A656BF18163BF200746D36 /* InfoPlist.strings in Resources */,
+				B39826F91C6156C500871814 /* tab.png in Resources */,
+				B39826ED1C614E8700871814 /* vertu_s.png in Resources */,
+				B39826EF1C61539A00871814 /* ipad.png in Resources */,
 				48A656C718163BF200746D36 /* Images.xcassets in Resources */,
+				B39826FD1C61584E00871814 /* lumia950xl.png in Resources */,
+				B39826EB1C614E8700871814 /* apple_s.png in Resources */,
+				B39827041C6159B800871814 /* signature.png in Resources */,
+				B39827011C6158BD00871814 /* lumia1520.png in Resources */,
+				B39827071C615AFA00871814 /* aster.png in Resources */,
+				B39826F71C6156C500871814 /* note.png in Resources */,
+				B39826EC1C614E8700871814 /* samsung_s.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +405,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48A656E618163C1B00746D36 /* CompanyViewController.m in Sources */,
+				B39827111C61629400871814 /* WebViewController.m in Sources */,
 				48A656C518163BF200746D36 /* NavControllerAppDelegate.m in Sources */,
 				48A656C118163BF200746D36 /* main.m in Sources */,
 				48A656EB18163F8700746D36 /* ProductViewController.m in Sources */,
@@ -411,12 +531,17 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NavCtrl/NavCtrl-Prefix.pch";
 				INFOPLIST_FILE = "NavCtrl/NavCtrl-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vlgusakov;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -429,12 +554,17 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NavCtrl/NavCtrl-Prefix.pch";
 				INFOPLIST_FILE = "NavCtrl/NavCtrl-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vlgusakov;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

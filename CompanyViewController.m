@@ -7,13 +7,13 @@
 //
 
 #import "CompanyViewController.h"
-#import "ProductViewController.h"
 
 @interface CompanyViewController ()
 
 @end
 
 @implementation CompanyViewController
+
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -36,7 +36,8 @@
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     
-    self.companyList = @[@"Apple mobile devices",@"Samsung mobile devices"];
+    self.companyList = [[NSMutableArray alloc] initWithObjects: @"Apple mobile devices",@"Samsung mobile devices",@"Microsoft mobile devices",@"Vertu mobile devices", nil];
+    self.companyLogos = [[NSMutableArray alloc] initWithObjects:@"apple_s.png",@"samsung_s.png",@"microsoft.png",@"vertu_s.png", nil];
     self.title = @"Mobile device makers";
     
     
@@ -52,14 +53,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
+//#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
+//#warning Incomplete method implementation.
     // Return the number of rows in the section.
     return [self.companyList count];
 }
@@ -75,32 +76,40 @@
     // Configure the cell...
     
     cell.textLabel.text = [self.companyList objectAtIndex:[indexPath row]];
+    cell.imageView.image = [UIImage imageNamed:[self.companyLogos objectAtIndex:[indexPath row]]];
+    
     
     return cell;
 }
 
-/*
+
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        [self.companyList removeObjectAtIndex:indexPath.row];
+        [self.companyLogos removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+    }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    }
+    
+    
 }
-*/
+
 
 /*
 // Override to support rearranging the table view.
@@ -124,13 +133,9 @@
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.productViewController.title = [self.companyList objectAtIndex:[indexPath row]];
 
 
-    if (indexPath.row == 0) {
-        self.productViewController.title = @"Apple mobile devices";
-    } else {
-        self.productViewController.title = @"Samsung mobile devices";
-    }
     
     [self.navigationController
         pushViewController:self.productViewController

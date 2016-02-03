@@ -9,6 +9,15 @@
 #import "ProductViewController.h"
 
 @interface ProductViewController ()
+{
+    int counter;
+}
+
+@property (nonatomic, retain) NSMutableArray *products;
+@property (nonatomic, retain) NSMutableArray *productsLogos;
+
+@property (nonatomic, retain) WebViewController *webViewController;
+
 
 @end
 
@@ -32,17 +41,52 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.products = [[NSMutableArray alloc] initWithObjects:
+                     [[NSMutableArray alloc] initWithObjects: @"iPad", @"iPod Touch",@"iPhone", nil],
+                     [[NSMutableArray alloc] initWithObjects:@"Galaxy S4", @"Galaxy Note", @"Galaxy Tab", nil],
+                     [[NSMutableArray alloc] initWithObjects: @"Lumia 950XL", @"Lumia 550", @"Lumia 1520", nil],
+                     [[NSMutableArray alloc] initWithObjects: @"Signature", @"The New Signature Touch", @"Aster", nil],
+                     nil];
+    
+    self.productsLogos = [[NSMutableArray alloc] initWithObjects:
+                          [[NSMutableArray alloc] initWithObjects:@"ipad.png",@"ipod.png",@"iphone.png", nil],
+                          [[NSMutableArray alloc] initWithObjects: @"s4.png",@"note.png",@"tab.png", nil],
+                          [[NSMutableArray alloc] initWithObjects:@"lumia950xl.png",@"lumia550.png",@"lumia1520.png", nil],
+                          [[NSMutableArray alloc] initWithObjects:@"signature.png",@"stouch.jpeg",@"aster.png", nil],
+                          nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
     
+    
+        
+        
     if ([self.title isEqualToString:@"Apple mobile devices"]) {
-        self.products = @[@"iPad", @"iPod Touch",@"iPhone"];
-    } else {
-        self.products = @[@"Galaxy S4", @"Galaxy Note", @"Galaxy Tab"];
-    }
+        counter = 0;
+        
+    } else
+        if ([self.title isEqualToString:@"Samsung mobile devices"]) {
+            counter = 1;
+            
+        }
+        else
+            if ([self.title isEqualToString:@"Microsoft mobile devices"]) {
+                counter = 2;
+                
+            }
+            else
+                if ([self.title isEqualToString:@"Vertu mobile devices"]) {
+                    counter = 3;
+                    
+                }
+    
+    
+    
+    
     [self.tableView reloadData];
 }
 
@@ -63,7 +107,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.products count];
+    return [[self.products objectAtIndex:counter] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -74,64 +118,97 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     // Configure the cell...
-    cell.textLabel.text = [self.products objectAtIndex:[indexPath row]];
+    cell.textLabel.text = [[self.products objectAtIndex:counter] objectAtIndex:[indexPath row]];
+    cell.imageView.image = [UIImage imageNamed:[[self.productsLogos objectAtIndex:counter] objectAtIndex:[indexPath row]]];
     return cell;
 }
 
-/*
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+//        if ([self.title isEqualToString:@"Apple mobile devices"]) {
+//            counter = 0;
+//            
+//        } else
+//            if ([self.title isEqualToString:@"Samsung mobile devices"]) {
+//                counter = 1;
+//                
+//            }
+//            else
+//                if ([self.title isEqualToString:@"Microsoft mobile devices"]) {
+//                    counter = 2;
+//                    
+//                }
+//                else
+//                    if ([self.title isEqualToString:@"Vertu mobile devices"]) {
+//                        counter = 3;
+//                        
+//                    }
+        
+        [[self.products objectAtIndex:counter] removeObjectAtIndex:indexPath.row];
+        [[self.productsLogos objectAtIndex:counter] removeObjectAtIndex:indexPath.row];
+        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+            
+        
+    }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
 
-/*
+
+
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
+    [[self.products objectAtIndex:counter] exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+    [[self.productsLogos objectAtIndex:counter] exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
 }
-*/
 
-/*
+
+
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the item to be re-orderable.
     return YES;
 }
-*/
+
 
 
 #pragma mark - Table view delegate
 
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
 //     Navigation logic may go here, for example:
 //     Create the next view controller.
-//    DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+        self.webViewController = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
 //
 //     Pass the selected object to the new view controller.
 //    
 //     Push the view controller.
 //    [self.navigationController pushViewController:detailViewController animated:YES];
-//}
+
+    self.webViewController.title = [[self.products objectAtIndex:counter] objectAtIndex:[indexPath row]];
+    
+    [self.navigationController
+     pushViewController:self.webViewController animated:YES];
+}
 
 
 
