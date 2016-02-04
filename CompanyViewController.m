@@ -8,6 +8,7 @@
 
 #import "CompanyViewController.h"
 
+
 @interface CompanyViewController ()
 
 @end
@@ -35,10 +36,13 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    
-    self.companyList = [[NSMutableArray alloc] initWithObjects: @"Apple mobile devices",@"Samsung mobile devices",@"Microsoft mobile devices",@"Vertu mobile devices", nil];
-    self.companyLogos = [[NSMutableArray alloc] initWithObjects:@"apple_s.png",@"samsung_s.png",@"microsoft.png",@"vertu_s.png", nil];
+    self.sharedManager = [MyManager sharedManager];
+    NSLog(@"%@",[self.sharedManager someProperty]);
+    self.sharedManager.someProperty = @"hello";
+    NSLog(@"%@",[self.sharedManager someProperty]);
+
     self.title = @"Mobile device makers";
+    
     
     
 }
@@ -53,16 +57,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-//#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return [self.companyList count];
+    return [self.sharedManager.companyList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -75,8 +77,10 @@
     
     // Configure the cell...
     
-    cell.textLabel.text = [self.companyList objectAtIndex:[indexPath row]];
-    cell.imageView.image = [UIImage imageNamed:[self.companyLogos objectAtIndex:[indexPath row]]];
+    cell.textLabel.text = [[ self.sharedManager.companyList objectAtIndex:[indexPath row]  ] companyName];
+    cell.imageView.image = [UIImage imageNamed:[[self.sharedManager.companyList objectAtIndex:[indexPath row]] companyLogo]];
+    
+    
     
     
     return cell;
@@ -99,8 +103,8 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [self.companyList removeObjectAtIndex:indexPath.row];
-        [self.companyLogos removeObjectAtIndex:indexPath.row];
+        [self.sharedManager.companyList removeObjectAtIndex:indexPath.row];
+        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -133,8 +137,9 @@
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.productViewController.title = [self.companyList objectAtIndex:[indexPath row]];
-
+    self.productViewController.title = [[self.sharedManager.companyList objectAtIndex:[indexPath row]] companyName];
+    
+    self.sharedManager.currentCompanyNumber = [indexPath row];
 
     
     [self.navigationController

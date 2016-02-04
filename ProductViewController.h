@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "WebViewController.h"
+#import "MyManager.h"
 
 @interface ProductViewController : UITableViewController
+
+@property (nonatomic, retain) MyManager *sharedManager;
 
 @end

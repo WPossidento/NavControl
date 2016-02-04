@@ -42,6 +42,8 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    self.sharedManager = [MyManager sharedManager];
+    
     self.products = [[NSMutableArray alloc] initWithObjects:
                      [[NSMutableArray alloc] initWithObjects: @"iPad", @"iPod Touch",@"iPhone", nil],
                      [[NSMutableArray alloc] initWithObjects:@"Galaxy S4", @"Galaxy Note", @"Galaxy Tab", nil],
@@ -61,31 +63,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
-    
-    
-        
-        
-    if ([self.title isEqualToString:@"Apple mobile devices"]) {
-        counter = 0;
-        
-    } else
-        if ([self.title isEqualToString:@"Samsung mobile devices"]) {
-            counter = 1;
-            
-        }
-        else
-            if ([self.title isEqualToString:@"Microsoft mobile devices"]) {
-                counter = 2;
-                
-            }
-            else
-                if ([self.title isEqualToString:@"Vertu mobile devices"]) {
-                    counter = 3;
-                    
-                }
-    
-    
-    
     
     [self.tableView reloadData];
 }
@@ -107,7 +84,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [[self.products objectAtIndex:counter] count];
+    return [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -118,8 +95,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     // Configure the cell...
-    cell.textLabel.text = [[self.products objectAtIndex:counter] objectAtIndex:[indexPath row]];
-    cell.imageView.image = [UIImage imageNamed:[[self.productsLogos objectAtIndex:counter] objectAtIndex:[indexPath row]]];
+    cell.textLabel.text = [[[[self.sharedManager.companyList  objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:indexPath.row] productName];
+    
+    cell.imageView.image = [UIImage imageNamed:[[[[self.sharedManager.companyList  objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:indexPath.row] productLogo]];
+    
     return cell;
 }
 
@@ -138,25 +117,6 @@
 {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-//        if ([self.title isEqualToString:@"Apple mobile devices"]) {
-//            counter = 0;
-//            
-//        } else
-//            if ([self.title isEqualToString:@"Samsung mobile devices"]) {
-//                counter = 1;
-//                
-//            }
-//            else
-//                if ([self.title isEqualToString:@"Microsoft mobile devices"]) {
-//                    counter = 2;
-//                    
-//                }
-//                else
-//                    if ([self.title isEqualToString:@"Vertu mobile devices"]) {
-//                        counter = 3;
-//                        
-//                    }
         
         [[self.products objectAtIndex:counter] removeObjectAtIndex:indexPath.row];
         [[self.productsLogos objectAtIndex:counter] removeObjectAtIndex:indexPath.row];
@@ -175,8 +135,7 @@
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    [[self.products objectAtIndex:counter] exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
-    [[self.productsLogos objectAtIndex:counter] exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+    [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
 }
 
 
@@ -204,8 +163,9 @@
 //     Push the view controller.
 //    [self.navigationController pushViewController:detailViewController animated:YES];
 
-    self.webViewController.title = [[self.products objectAtIndex:counter] objectAtIndex:[indexPath row]];
+    self.webViewController.title = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]productsList] objectAtIndex:indexPath.row] productName];
     
+    self.sharedManager.currentProductNumber = indexPath.row;
     [self.navigationController
      pushViewController:self.webViewController animated:YES];
 }

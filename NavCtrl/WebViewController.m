@@ -31,58 +31,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    NSString *productName = @"";
-    NSString *companyName = @"https://apple.com";
-    
-    if ([self.title isEqualToString: @"iPad"]) {
-        companyName = @"https://apple.com";
-        productName = @"ipad";
-    }
-    else if ([self.title isEqualToString:@"iPod Touch"]) {
-        companyName = @"https://apple.com";
-        productName = @"ipod";
-    }
-    else if ([self.title isEqualToString:@"iPhone"]) {
-        companyName = @"https://apple.com";
-        productName = @"iphone";
-    }
-    else if ([self.title isEqualToString:@"Galaxy S4"]) {
-        companyName = @"http://www.samsung.com";
-        productName = @"global/microsite/galaxys4";
-    }
-    else if ([self.title isEqualToString:@"Galaxy Note"]) {
-        companyName = @"http://www.samsung.com";
-        productName = @"global/microsite/galaxynote";
-    }
-    else if ([self.title isEqualToString:@"Galaxy Tab"]) {
-        companyName = @"http://www.samsung.com";
-        productName = @"global/microsite/galaxytab";
-    }
-    else if ([self.title isEqualToString:@"Lumia 950XL"]) {
-        companyName = @"https://www.microsoft.com";
-        productName = @"en-us/mobile/phone/lumia950-xl-dual-sim/";
-    }
-    else if ([self.title isEqualToString:@"Lumia 550"]) {
-        companyName = @"https://www.microsoft.com";
-        productName = @"en-us/mobile/phone/lumia550/";
-    }
-    else if ([self.title isEqualToString:@"Lumia 1520"]) {
-        companyName = @"https://www.microsoft.com";
-        productName = @"en-us/mobile/phone/lumia1520/";
-    }
-    else if ([self.title isEqualToString:@"Signature"]) {
-        companyName = @"http://www.vertu.com";
-        productName = @"us/en/collections/signature/";
-    }
-    else if ([self.title isEqualToString:@"The New Signature Touch"]) {
-        companyName = @"http://www.vertu.com";
-        productName = @"us/en/collections/signature-touch/";
-    }
-    else if ([self.title isEqualToString:@"Aster"]) {
-        companyName = @"http://www.vertu.com";
-        productName = @"us/en/collections/aster/";
-    }
-    
+    self.sharedManager = [MyManager sharedManager];
     
     CGRect screen = [[UIScreen mainScreen] bounds];
     CGFloat width = CGRectGetWidth(screen);
@@ -93,7 +42,9 @@
     self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, width, height) configuration:theConfiguration];
     [self.view addSubview:self.webView];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", companyName, productName]];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] productURL]]];
+    
     NSURLRequest *requestURL = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:requestURL];
     

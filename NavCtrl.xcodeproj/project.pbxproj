@@ -44,6 +44,7 @@
 		B39827151C617AE200871814 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B39827131C617AE200871814 /* WebKit.framework */; };
 		B39827191C61F26B00871814 /* Company.m in Sources */ = {isa = PBXBuildFile; fileRef = B39827181C61F26B00871814 /* Company.m */; };
 		B398271C1C61F27D00871814 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = B398271B1C61F27D00871814 /* Product.m */; };
+		B39827211C629CEF00871814 /* MyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B39827201C629CEF00871814 /* MyManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,8 @@
 		B39827181C61F26B00871814 /* Company.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Company.m; sourceTree = "<group>"; };
 		B398271A1C61F27D00871814 /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Product.h; sourceTree = "<group>"; };
 		B398271B1C61F27D00871814 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
+		B398271F1C629CEF00871814 /* MyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyManager.h; sourceTree = "<group>"; };
+		B39827201C629CEF00871814 /* MyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +197,8 @@
 		48A656BA18163BF200746D36 /* NavCtrl */ = {
 			isa = PBXGroup;
 			children = (
+				B398271F1C629CEF00871814 /* MyManager.h */,
+				B39827201C629CEF00871814 /* MyManager.m */,
 				483796CB1BCBF7A00062D5AB /* AppDelegate */,
 				483796CC1BCBF7C70062D5AB /* ParentViewController */,
 				483796CD1BCBF7EB0062D5AB /* ProductViewController */,
@@ -434,6 +439,7 @@
 				48A656E618163C1B00746D36 /* CompanyViewController.m in Sources */,
 				B39827191C61F26B00871814 /* Company.m in Sources */,
 				B39827111C61629400871814 /* WebViewController.m in Sources */,
+				B39827211C629CEF00871814 /* MyManager.m in Sources */,
 				48A656C518163BF200746D36 /* NavControllerAppDelegate.m in Sources */,
 				48A656C118163BF200746D36 /* main.m in Sources */,
 				48A656EB18163F8700746D36 /* ProductViewController.m in Sources */,

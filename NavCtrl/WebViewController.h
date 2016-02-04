@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
+#import "MyManager.h"
 
 @interface WebViewController : UIViewController
+
+@property (nonatomic, retain) MyManager *sharedManager;
+
 
 @end

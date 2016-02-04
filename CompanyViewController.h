@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductViewController.h"
+#import "MyManager.h"
 
 //@class ProductViewController;
 
@@ -16,6 +17,7 @@
 @property (nonatomic, retain) NSMutableArray *companyList;
 @property (nonatomic, retain) NSMutableArray *companyLogos;
 
+@property (nonatomic, retain) MyManager *sharedManager;
 
 @property (nonatomic, retain) IBOutlet  ProductViewController * productViewController;
 
