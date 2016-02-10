@@ -7,7 +7,32 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MyManager.h"
 
-@interface AddCompanyViewController : UIViewController
+@class MyManager;
+
+@interface AddCompanyViewController : UIViewController 
+
+@property (retain, nonatomic) IBOutlet UIButton *AddProductsButton;
+@property (nonatomic) NSUInteger productsViewCounter;
+@property (retain, nonatomic) IBOutlet UITextField *companyNameTextField;
+@property (retain, nonatomic) IBOutlet UIImageView *companyLogo;
+@property (retain, nonatomic) UIImagePickerController *companyImgPicker;
+@property (retain, nonatomic) UIImagePickerController *productImgPicker;
+@property (retain, nonatomic) UIView *productsView;
+@property (retain, nonatomic) UIImageView *productLogoImageView;
+@property (retain, nonatomic) UIImageView *iv;
+
+@property (retain, nonatomic) Company *company;
+//@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (nonatomic) BOOL fillView;
+
+
+- (IBAction)displayNewProductsList:(id)sender;
+- (IBAction)chooseCompanyLogo:(id)sender;
+- (IBAction)deleteImg:(id)sender;
+
+-(void) fillProducts;
+//- (id)initWithCompany:(Company *)comp;
 
 @end

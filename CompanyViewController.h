@@ -9,16 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "ProductViewController.h"
 #import "MyManager.h"
+#import "AddCompanyViewController.h"
 
 //@class ProductViewController;
 
-@interface CompanyViewController : UITableViewController
-
-@property (nonatomic, retain) NSMutableArray *companyList;
-@property (nonatomic, retain) NSMutableArray *companyLogos;
+@interface CompanyViewController : UITableViewController <UITextFieldDelegate>
 
 @property (nonatomic, retain) MyManager *sharedManager;
 
 @property (nonatomic, retain) IBOutlet  ProductViewController * productViewController;
+
+@property (nonatomic, retain) AddCompanyViewController  *addCompanyViewController;
+
+-(void) insertNewObject;
+-(void) editCompany;
 
 @end

@@ -11,7 +11,7 @@
 @implementation Product
 
 
--(instancetype)initWithName: (NSString *) name andLogo: (NSString *) logo andURL: (NSString*) url
+-(instancetype)initWithName: (NSString *) name andLogo: (UIImage *) logo andURL: (NSString*) url
 {
     self = [super init];
     if (self) {

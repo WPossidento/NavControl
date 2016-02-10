@@ -9,15 +9,12 @@
 #import "ProductViewController.h"
 
 @interface ProductViewController ()
-{
-    int counter;
-}
 
 @property (nonatomic, retain) NSMutableArray *products;
 @property (nonatomic, retain) NSMutableArray *productsLogos;
 
 @property (nonatomic, retain) WebViewController *webViewController;
-
+@property (nonatomic, retain) EditProductViewController *editProductViewController;
 
 @end
 
@@ -44,19 +41,8 @@
     
     self.sharedManager = [MyManager sharedManager];
     
-    self.products = [[NSMutableArray alloc] initWithObjects:
-                     [[NSMutableArray alloc] initWithObjects: @"iPad", @"iPod Touch",@"iPhone", nil],
-                     [[NSMutableArray alloc] initWithObjects:@"Galaxy S4", @"Galaxy Note", @"Galaxy Tab", nil],
-                     [[NSMutableArray alloc] initWithObjects: @"Lumia 950XL", @"Lumia 550", @"Lumia 1520", nil],
-                     [[NSMutableArray alloc] initWithObjects: @"Signature", @"The New Signature Touch", @"Aster", nil],
-                     nil];
-    
-    self.productsLogos = [[NSMutableArray alloc] initWithObjects:
-                          [[NSMutableArray alloc] initWithObjects:@"ipad.png",@"ipod.png",@"iphone.png", nil],
-                          [[NSMutableArray alloc] initWithObjects: @"s4.png",@"note.png",@"tab.png", nil],
-                          [[NSMutableArray alloc] initWithObjects:@"lumia950xl.png",@"lumia550.png",@"lumia1520.png", nil],
-                          [[NSMutableArray alloc] initWithObjects:@"signature.png",@"stouch.jpeg",@"aster.png", nil],
-                          nil];
+
+    self.tableView.allowsSelectionDuringEditing = YES;
     
 }
 
@@ -64,6 +50,8 @@
     
     [super viewWillAppear:animated];
     
+    [self setEditing:NO animated:NO];
+
     [self.tableView reloadData];
 }
 
@@ -97,7 +85,7 @@
     // Configure the cell...
     cell.textLabel.text = [[[[self.sharedManager.companyList  objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:indexPath.row] productName];
     
-    cell.imageView.image = [UIImage imageNamed:[[[[self.sharedManager.companyList  objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:indexPath.row] productLogo]];
+    cell.imageView.image = [[[[self.sharedManager.companyList  objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:indexPath.row] productLogo];
     
     return cell;
 }
@@ -118,8 +106,8 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
-        [[self.products objectAtIndex:counter] removeObjectAtIndex:indexPath.row];
-        [[self.productsLogos objectAtIndex:counter] removeObjectAtIndex:indexPath.row];
+        
+        [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber ] productsList] removeObjectAtIndex:indexPath.row];
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             
@@ -156,18 +144,40 @@
 {
 //     Navigation logic may go here, for example:
 //     Create the next view controller.
-        self.webViewController = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
 //
 //     Pass the selected object to the new view controller.
 //    
 //     Push the view controller.
 //    [self.navigationController pushViewController:detailViewController animated:YES];
 
-    self.webViewController.title = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]productsList] objectAtIndex:indexPath.row] productName];
     
     self.sharedManager.currentProductNumber = indexPath.row;
-    [self.navigationController
-     pushViewController:self.webViewController animated:YES];
+    
+    if (self.tableView.editing == YES) {
+        
+        NSLog(@"EDIT MODE!!!");
+        
+        self.editProductViewController = [[EditProductViewController alloc] initWithNibName:@"EditProductViewController" bundle:nil];
+
+        self.editProductViewController.title = [NSString stringWithFormat:@"Edit %@",[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]productsList] objectAtIndex:indexPath.row] productName]];
+        
+        [self.navigationController
+         pushViewController:self.editProductViewController animated:YES];
+        
+        [self setEditing:NO animated:NO];
+        
+    } else {
+        
+        self.webViewController = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
+
+        self.webViewController.title = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]productsList] objectAtIndex:indexPath.row] productName];
+        
+        [self.navigationController
+         pushViewController:self.webViewController animated:YES];
+
+        
+    }
+
 }
 
 
