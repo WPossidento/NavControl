@@ -80,6 +80,39 @@ static MyManager *sharedMyManager = nil;
     return self;
 }
 
+-(void) loadStocksTo:(id<MyManagerDelegate>) delegate {
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    [[session dataTaskWithURL:[NSURL URLWithString:@"http://finance.yahoo.com/d/quotes.csv?s=AAPL+SSU.DE+MSFT+VTU.L&f=no"]
+            completionHandler:^(NSData *data,
+                                NSURLResponse *response,
+                                NSError *error) {
+                // handle response
+                NSString *stocksStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSLog(@"Data: %@", stocksStr);
+                
+                    NSMutableArray *stocksArr = [[NSMutableArray alloc] initWithArray:[stocksStr componentsSeparatedByString:@"\n"]];
+                    [stocksArr removeLastObject];
+                
+                    self.stocksFinal = [[NSMutableArray alloc] init];
+                
+                    NSArray *keys = [NSArray arrayWithObjects:@"company", @"openprice", nil];
+                
+                    for (NSString *stockStr in stocksArr) {
+                        NSArray *tmp = [stockStr componentsSeparatedByString:@","];
+                        NSDictionary *dict = [NSDictionary dictionaryWithObjects:tmp forKeys:keys];
+                        [self.stocksFinal addObject:dict];
+                        
+                    }
+                
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [delegate stockUpdated];
+                        
+                    });
+                
+            }] resume];
+    
+}
 
 
 - (void)dealloc {

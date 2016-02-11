@@ -9,20 +9,32 @@
 #import <Foundation/Foundation.h>
 #import "Company.h"
 #import "Product.h"
-//#import "AddCompanyViewController.h"
 
-//@class AddCompanyViewController;
+@class CompanyViewController;
+
+
+@protocol MyManagerDelegate <NSObject>
+
+@optional
+- (void)stockUpdated;
+
+@end
+
 
 @interface MyManager : NSObject
 
 @property (nonatomic, retain) NSMutableArray <Company *> *companyList;
 @property (nonatomic) NSInteger currentCompanyNumber;
 @property (nonatomic) NSInteger currentProductNumber;
+@property (nonatomic, retain) NSMutableArray *stocksFinal;
 
-//@property (nonatomic, retain) AddCompanyViewController *addCompanyViewController;
+@property (nonatomic, retain) CompanyViewController *companyViewController;
 
 
 + (id)sharedManager;
 
 //-(void) saveNewCompany;
+-(void) loadStocksTo:(id<MyManagerDelegate>) delegate;
+
+
 @end

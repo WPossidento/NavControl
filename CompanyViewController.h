@@ -11,15 +11,19 @@
 #import "MyManager.h"
 #import "AddCompanyViewController.h"
 
-//@class ProductViewController;
 
-@interface CompanyViewController : UITableViewController <UITextFieldDelegate>
+@class ProductViewController;
+@class AddCompanyViewController;
+
+@interface CompanyViewController : UITableViewController <UITextFieldDelegate, MyManagerDelegate>
 
 @property (nonatomic, retain) MyManager *sharedManager;
 
 @property (nonatomic, retain) IBOutlet  ProductViewController * productViewController;
 
 @property (nonatomic, retain) AddCompanyViewController  *addCompanyViewController;
+
+@property (nonatomic, strong) id Delegate; 
 
 -(void) insertNewObject;
 -(void) editCompany;

@@ -11,6 +11,8 @@
 #import "MyManager.h"
 #import "EditProductViewController.h"
 
+@class MyManager;
+
 @interface ProductViewController : UITableViewController
 
 @property (nonatomic, retain) MyManager *sharedManager;

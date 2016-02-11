@@ -28,6 +28,7 @@
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
 
     // Uncomment the following line to preserve selection between presentations.
@@ -38,21 +39,9 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
     
     self.sharedManager = [MyManager sharedManager];
-
+    
     self.title = @"Mobile device makers";
     
-    NSLog(@"%@", [NSString stringWithContentsOfURL:[NSURL URLWithString:@"http://download.finance.yahoo.com/d/quotes.csv?s=BP.L&f=sl1d1t1c1ohgv&e=.csv"] encoding:NSUTF8StringEncoding error:nil]);
-
-    
-}
-
--(void)toggleEdit{
-    [self.tableView setEditing:!self.tableView.editing animated:YES];
-    
-    if (self.tableView.editing)
-        [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
-    else
-        [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,8 +49,9 @@
     [super viewWillAppear:animated];
     
     [self setEditing:NO animated:NO];
-
-    [self.tableView reloadData];
+    
+    id<MyManagerDelegate> d = self;
+    [self.sharedManager loadStocksTo:d];
     
 }
 
@@ -89,13 +79,16 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
     // Configure the cell...
     
-    cell.textLabel.text = [[ self.sharedManager.companyList objectAtIndex:[indexPath row]  ] companyName];
+    cell.textLabel.text = [[ self.sharedManager.companyList objectAtIndex:[indexPath row]] companyName];
+    cell.detailTextLabel.text = [[self.sharedManager.stocksFinal objectAtIndex:[indexPath row]] objectForKey:@"openprice"];
+    cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     cell.imageView.image = [[self.sharedManager.companyList objectAtIndex:[indexPath row]] companyLogo];
     
     
@@ -132,15 +125,11 @@
     
 }
 
-
-
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
     [self.sharedManager.companyList exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
 }
-
-
 
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -148,8 +137,6 @@
     // Return NO if you do not want the item to be re-orderable.
     return YES;
 }
-
-
 
 #pragma mark - Table view delegate
 
@@ -165,7 +152,6 @@
         NSLog(@"EDIT MODE!!!");
         [self editCompany];
 
-        
     } else {
     
         [self.navigationController
@@ -189,13 +175,20 @@
 -(void) editCompany {
     self.addCompanyViewController = [[AddCompanyViewController alloc] initWithNibName:@"AddCompanyViewController" bundle:nil];
     
-//    self.addCompanyViewController = [[AddCompanyViewController alloc] initWithCompany: [self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]];
-
-    
     self.addCompanyViewController.title = [NSString stringWithFormat: @"Edit %@", [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyName]];
     
         [self.navigationController
      pushViewController:self.addCompanyViewController animated:YES];
+    
+}
+
+-(void)stockUpdated {
+    
+    
+    [self.tableView reloadData];
+    
+    NSLog(@"stockUpdated");
+    
     
 }
 
