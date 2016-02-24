@@ -19,8 +19,6 @@
 
 @property (nonatomic, retain) IBOutlet  ProductViewController * productViewController;
 
-@property (nonatomic, retain) AddCompanyViewController  *addCompanyViewController;
-
 -(void) insertNewObject;
 -(void) editCompany;
 

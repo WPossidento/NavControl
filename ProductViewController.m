@@ -13,9 +13,6 @@
 @property (nonatomic, retain) NSMutableArray *products;
 @property (nonatomic, retain) NSMutableArray *productsLogos;
 
-@property (nonatomic, retain) WebViewController *webViewController;
-@property (nonatomic, retain) EditProductViewController *editProductViewController;
-
 @end
 
 @implementation ProductViewController
@@ -81,7 +78,7 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     // Configure the cell...
     cell.textLabel.text = [[[[self.sharedManager.companyList  objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:indexPath.row] productName];
@@ -166,23 +163,27 @@
         
         NSLog(@"EDIT MODE!!!");
         
-        self.editProductViewController = [[EditProductViewController alloc] initWithNibName:@"EditProductViewController" bundle:nil];
+        EditProductViewController *editProductViewController = [[EditProductViewController alloc] initWithNibName:@"EditProductViewController" bundle:nil];
 
-        self.editProductViewController.title = [NSString stringWithFormat:@"Edit %@",[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]productsList] objectAtIndex:indexPath.row] productName]];
+        editProductViewController.title = [NSString stringWithFormat:@"Edit %@",[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]productsList] objectAtIndex:indexPath.row] productName]];
         
         [self.navigationController
-         pushViewController:self.editProductViewController animated:YES];
+         pushViewController:editProductViewController animated:YES];
         
         [self setEditing:NO animated:NO];
         
+        [editProductViewController release];
+        
     } else {
         
-        self.webViewController = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
+        WebViewController *webViewController = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
 
-        self.webViewController.title = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]productsList] objectAtIndex:indexPath.row] productName];
+        webViewController.title = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]productsList] objectAtIndex:indexPath.row] productName];
         
         [self.navigationController
-         pushViewController:self.webViewController animated:YES];
+         pushViewController:webViewController animated:YES];
+        
+        [webViewController release];
 
         
     }

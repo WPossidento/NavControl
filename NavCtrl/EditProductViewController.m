@@ -19,7 +19,7 @@
 
 @property (nonatomic, retain) MyManager *sharedManager;
 
-@property (retain, nonatomic) UIImagePickerController *productImgPicker;
+//@property (retain, nonatomic) UIImagePickerController *productImgPicker;
 
 
 -(void) saveProduct;
@@ -94,10 +94,12 @@
 
 - (IBAction)chooseButtonPressed:(id)sender {
     
-    self.productImgPicker = [[UIImagePickerController alloc] init];
-    self.productImgPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    self.productImgPicker.delegate = self;
-    [self presentViewController:self.productImgPicker animated:YES completion:nil];
+    UIImagePickerController *productImgPicker = [[UIImagePickerController alloc] init];
+    productImgPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    productImgPicker.delegate = self;
+    [self presentViewController:productImgPicker animated:YES completion:nil];
+    
+    [productImgPicker release];
 }
 
 - (IBAction)deleteButtonPressed:(id)sender {

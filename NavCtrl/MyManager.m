@@ -22,7 +22,7 @@ static MyManager *sharedMyManager = nil;
 }
 
 
-#pragma mark Singleton Methods
+//#pragma mark Singleton Methods
 //+ (MyManager*)sharedManager
 //{
 //    // 1
@@ -37,7 +37,6 @@ static MyManager *sharedMyManager = nil;
 //    });
 //    return _sharedInstance;
 //}
-
 #pragma mark Singleton Methods
 + (id)sharedManager {
     @synchronized(self) {
@@ -101,7 +100,7 @@ static MyManager *sharedMyManager = nil;
         
 //        self.companyList = [[NSMutableArray alloc] initWithObjects: apple, samsung, microsoft, vertu, nil];
         
-        self.companyList = [[NSMutableArray alloc] init];
+        self.companyList = [[[NSMutableArray alloc] init] autorelease];
         
         
         NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); //path to device's Documents folder
@@ -201,6 +200,10 @@ static MyManager *sharedMyManager = nil;
                 
                 
                 [self.companyList addObject:newCompany];
+                
+                [name release];
+                [logo release];
+                [newCompany release];
             }
         }
         NSLog(@"---Loaded Companies List from DB---");
@@ -232,7 +235,7 @@ static MyManager *sharedMyManager = nil;
                     NSString *plogo = [[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
                     NSString *purl = [[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
                     
-                    Product *newProduct = [[Product alloc] initWithName:pname andLogo:[UIImage imageNamed:plogo] andURL:purl];
+                    Product *newProduct;
                     
                     if (num == 0) {
                         newProduct = [[Product alloc] initWithName:pname andLogo:[UIImage imageNamed:plogo] andURL:purl];
@@ -240,7 +243,8 @@ static MyManager *sharedMyManager = nil;
                     else {
                         newProduct = [[Product alloc] initWithName:pname andLogo:[UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.png",self.imagesPath, pname]] andURL:purl];
                     }
-                    
+                    [pname release];
+                    [purl release];
                     NSString *imageFile = [self.imagesPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",newProduct.productName]];
                     
                     if (![fileManager fileExistsAtPath:imageFile]) {
@@ -248,12 +252,14 @@ static MyManager *sharedMyManager = nil;
                         NSData *companyImgData = UIImagePNGRepresentation([UIImage imageNamed:plogo]);
                         [companyImgData writeToFile:imageFile atomically:YES];
                     }
-                    
+                    [plogo release];
                     [products addObject:newProduct];
+                    [newProduct release];
                     
                 }
                 [self.companyList objectAtIndex:i].productsList = products;
             }
+            [products release];
         }
         NSLog(@"---Loaded Products List from DB---");
         sqlite3_close(NavCtrlDB);
@@ -262,6 +268,8 @@ static MyManager *sharedMyManager = nil;
     {
         NSLog(@"Unable to open db");
     }
+    
+    
     
 }
 

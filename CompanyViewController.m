@@ -77,7 +77,7 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
     // Configure the cell...
@@ -168,24 +168,29 @@
 }
 
 -(void) insertNewObject {
-    self.addCompanyViewController = [[AddCompanyViewController alloc] initWithNibName:@"AddCompanyViewController" bundle:nil];
     
-    self.addCompanyViewController.title = @"Add New Company";
+    AddCompanyViewController *addCompanyViewController = [[AddCompanyViewController alloc] initWithNibName:@"AddCompanyViewController" bundle:nil];
+    
+    addCompanyViewController.title = @"Add New Company";
     
     self.sharedManager.isCompanyInEditMode = NO;
 
     [self.navigationController
-     pushViewController:self.addCompanyViewController animated:YES];
+     pushViewController:addCompanyViewController animated:YES];
+    
+    [addCompanyViewController release];
     
 }
 
 -(void) editCompany {
-    self.addCompanyViewController = [[AddCompanyViewController alloc] initWithNibName:@"AddCompanyViewController" bundle:nil];
+    AddCompanyViewController *addCompanyViewController = [[AddCompanyViewController alloc] initWithNibName:@"AddCompanyViewController" bundle:nil];
     
-    self.addCompanyViewController.title = [NSString stringWithFormat: @"Edit %@", [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyName]];
+    addCompanyViewController.title = [NSString stringWithFormat: @"Edit %@", [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyName]];
     
         [self.navigationController
-     pushViewController:self.addCompanyViewController animated:YES];
+     pushViewController:addCompanyViewController animated:YES];
+    
+    [addCompanyViewController release];
     
 }
 

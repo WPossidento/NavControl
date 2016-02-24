@@ -9,8 +9,12 @@
 #import "WebViewController.h"
 
 @interface WebViewController () <WKNavigationDelegate>
+{
+    WKWebViewConfiguration *theConfiguration;
+    WKWebView *webView;
+}
 
-@property (retain, nonatomic) WKWebView *webView;
+
 
 @end
 
@@ -38,17 +42,16 @@
     CGFloat height = CGRectGetHeight(screen);
 
     
-    WKWebViewConfiguration *theConfiguration = [[WKWebViewConfiguration alloc] init];
-    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, width, height) configuration:theConfiguration];
-    [self.view addSubview:self.webView];
-    
+    theConfiguration = [[WKWebViewConfiguration alloc] init];
+    webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, width, height) configuration:theConfiguration];
+    [self.view addSubview:webView];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] productURL]]];
     
     NSLog(@"URL: %@", [NSString stringWithFormat:@"%@",[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] productURL]]);
     
     NSURLRequest *requestURL = [NSURLRequest requestWithURL:url];
-    [self.webView loadRequest:requestURL];
+    [webView loadRequest:requestURL];
     
     
 }
@@ -69,7 +72,10 @@
 */
 
 - (void)dealloc {
-    [_webView release];
+    [theConfiguration release];
+    [webView release];
+    
+    
     [super dealloc];
 }
 
