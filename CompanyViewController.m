@@ -35,15 +35,33 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
     
     self.sharedManager = [MyManager sharedManager];
-    NSLog(@"%@",[self.sharedManager someProperty]);
-    self.sharedManager.someProperty = @"hello";
-    NSLog(@"%@",[self.sharedManager someProperty]);
 
     self.title = @"Mobile device makers";
     
+    NSLog(@"%@", [NSString stringWithContentsOfURL:[NSURL URLWithString:@"http://download.finance.yahoo.com/d/quotes.csv?s=BP.L&f=sl1d1t1c1ohgv&e=.csv"] encoding:NSUTF8StringEncoding error:nil]);
+
     
+}
+
+-(void)toggleEdit{
+    [self.tableView setEditing:!self.tableView.editing animated:YES];
+    
+    if (self.tableView.editing)
+        [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
+    else
+        [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    
+    [super viewWillAppear:animated];
+    
+    [self setEditing:NO animated:NO];
+
+    [self.tableView reloadData];
     
 }
 
@@ -78,7 +96,7 @@
     // Configure the cell...
     
     cell.textLabel.text = [[ self.sharedManager.companyList objectAtIndex:[indexPath row]  ] companyName];
-    cell.imageView.image = [UIImage imageNamed:[[self.sharedManager.companyList objectAtIndex:[indexPath row]] companyLogo]];
+    cell.imageView.image = [[self.sharedManager.companyList objectAtIndex:[indexPath row]] companyLogo];
     
     
     
@@ -115,21 +133,22 @@
 }
 
 
-/*
+
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
+    [self.sharedManager.companyList exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
 }
-*/
 
-/*
+
+
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the item to be re-orderable.
     return YES;
 }
-*/
+
 
 
 #pragma mark - Table view delegate
@@ -140,15 +159,45 @@
     self.productViewController.title = [[self.sharedManager.companyList objectAtIndex:[indexPath row]] companyName];
     
     self.sharedManager.currentCompanyNumber = [indexPath row];
+    
+    if (self.tableView.editing == YES) {
+        
+        NSLog(@"EDIT MODE!!!");
+        [self editCompany];
 
+        
+    } else {
     
-    [self.navigationController
-        pushViewController:self.productViewController
-        animated:YES];
-    
+        [self.navigationController
+         pushViewController:self.productViewController
+         animated:YES];
+        
+    }
 
 }
- 
+
+-(void) insertNewObject {
+    self.addCompanyViewController = [[AddCompanyViewController alloc] initWithNibName:@"AddCompanyViewController" bundle:nil];
+    
+    self.addCompanyViewController.title = @"Add New Company";
+    
+    [self.navigationController
+     pushViewController:self.addCompanyViewController animated:YES];
+    
+}
+
+-(void) editCompany {
+    self.addCompanyViewController = [[AddCompanyViewController alloc] initWithNibName:@"AddCompanyViewController" bundle:nil];
+    
+//    self.addCompanyViewController = [[AddCompanyViewController alloc] initWithCompany: [self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]];
+
+    
+    self.addCompanyViewController.title = [NSString stringWithFormat: @"Edit %@", [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyName]];
+    
+        [self.navigationController
+     pushViewController:self.addCompanyViewController animated:YES];
+    
+}
 
 
 @end

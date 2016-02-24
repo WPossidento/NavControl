@@ -45,6 +45,10 @@
 		B39827191C61F26B00871814 /* Company.m in Sources */ = {isa = PBXBuildFile; fileRef = B39827181C61F26B00871814 /* Company.m */; };
 		B398271C1C61F27D00871814 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = B398271B1C61F27D00871814 /* Product.m */; };
 		B39827211C629CEF00871814 /* MyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B39827201C629CEF00871814 /* MyManager.m */; };
+		B39827251C6412E300871814 /* AddCompanyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B39827231C6412E300871814 /* AddCompanyViewController.m */; };
+		B39827261C6412E300871814 /* AddCompanyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B39827241C6412E300871814 /* AddCompanyViewController.xib */; };
+		B3E83A491C6BB14000E59512 /* EditProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E83A471C6BB14000E59512 /* EditProductViewController.m */; };
+		B3E83A4A1C6BB14000E59512 /* EditProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3E83A481C6BB14000E59512 /* EditProductViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +111,12 @@
 		B398271B1C61F27D00871814 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
 		B398271F1C629CEF00871814 /* MyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyManager.h; sourceTree = "<group>"; };
 		B39827201C629CEF00871814 /* MyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyManager.m; sourceTree = "<group>"; };
+		B39827221C6412E300871814 /* AddCompanyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCompanyViewController.h; sourceTree = "<group>"; };
+		B39827231C6412E300871814 /* AddCompanyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCompanyViewController.m; sourceTree = "<group>"; };
+		B39827241C6412E300871814 /* AddCompanyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCompanyViewController.xib; sourceTree = "<group>"; };
+		B3E83A461C6BB14000E59512 /* EditProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditProductViewController.h; sourceTree = "<group>"; };
+		B3E83A471C6BB14000E59512 /* EditProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProductViewController.m; sourceTree = "<group>"; };
+		B3E83A481C6BB14000E59512 /* EditProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditProductViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,10 +213,12 @@
 				483796CC1BCBF7C70062D5AB /* ParentViewController */,
 				483796CD1BCBF7EB0062D5AB /* ProductViewController */,
 				B398270D1C615FDE00871814 /* WebViewController */,
-				48A656C618163BF200746D36 /* Images.xcassets */,
-				48A656BB18163BF200746D36 /* Supporting Files */,
+				B39827271C6412E900871814 /* AddCompanyForm */,
+				B3E83A451C6BAD0A00E59512 /* EditProductViewController */,
 				B398271D1C61F28A00871814 /* Company */,
 				B398271E1C61F29200871814 /* Product */,
+				48A656C618163BF200746D36 /* Images.xcassets */,
+				48A656BB18163BF200746D36 /* Supporting Files */,
 			);
 			path = NavCtrl;
 			sourceTree = "<group>";
@@ -317,6 +329,26 @@
 			name = Product;
 			sourceTree = "<group>";
 		};
+		B39827271C6412E900871814 /* AddCompanyForm */ = {
+			isa = PBXGroup;
+			children = (
+				B39827221C6412E300871814 /* AddCompanyViewController.h */,
+				B39827231C6412E300871814 /* AddCompanyViewController.m */,
+				B39827241C6412E300871814 /* AddCompanyViewController.xib */,
+			);
+			name = AddCompanyForm;
+			sourceTree = "<group>";
+		};
+		B3E83A451C6BAD0A00E59512 /* EditProductViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B3E83A461C6BB14000E59512 /* EditProductViewController.h */,
+				B3E83A471C6BB14000E59512 /* EditProductViewController.m */,
+				B3E83A481C6BB14000E59512 /* EditProductViewController.xib */,
+			);
+			name = EditProductViewController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -414,9 +446,11 @@
 				B39826EB1C614E8700871814 /* apple_s.png in Resources */,
 				B39827041C6159B800871814 /* signature.png in Resources */,
 				B39827011C6158BD00871814 /* lumia1520.png in Resources */,
+				B39827261C6412E300871814 /* AddCompanyViewController.xib in Resources */,
 				B39827071C615AFA00871814 /* aster.png in Resources */,
 				B39826F71C6156C500871814 /* note.png in Resources */,
 				B39826EC1C614E8700871814 /* samsung_s.png in Resources */,
+				B3E83A4A1C6BB14000E59512 /* EditProductViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,7 +469,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B39827251C6412E300871814 /* AddCompanyViewController.m in Sources */,
 				B398271C1C61F27D00871814 /* Product.m in Sources */,
+				B3E83A491C6BB14000E59512 /* EditProductViewController.m in Sources */,
 				48A656E618163C1B00746D36 /* CompanyViewController.m in Sources */,
 				B39827191C61F26B00871814 /* Company.m in Sources */,
 				B39827111C61629400871814 /* WebViewController.m in Sources */,

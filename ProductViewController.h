@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WebViewController.h"
 #import "MyManager.h"
+#import "EditProductViewController.h"
 
 @interface ProductViewController : UITableViewController
 

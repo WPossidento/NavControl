@@ -9,14 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "Company.h"
 #import "Product.h"
+//#import "AddCompanyViewController.h"
+
+//@class AddCompanyViewController;
 
 @interface MyManager : NSObject
 
 @property (nonatomic, retain) NSMutableArray <Company *> *companyList;
-@property (nonatomic, retain) NSString *someProperty;
 @property (nonatomic) NSInteger currentCompanyNumber;
 @property (nonatomic) NSInteger currentProductNumber;
 
+//@property (nonatomic, retain) AddCompanyViewController *addCompanyViewController;
+
+
 + (id)sharedManager;
 
+//-(void) saveNewCompany;
 @end
