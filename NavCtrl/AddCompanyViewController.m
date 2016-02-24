@@ -18,15 +18,6 @@
 @implementation AddCompanyViewController
 
 
-//- (id)initWithCompany:(Company *)comp {
-//    
-//    self = [super initWithNibName:@"AddCompanyViewController" bundle:nil];
-//    if (self) {
-//        self.company = comp;
-//    }
-//    return self;
-//}
-
 - (void)viewDidLoad {
     
     
@@ -35,7 +26,7 @@
     
     self.sharedManager = [MyManager sharedManager];
 
-    
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.bounds.size.width, 0);
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveNewCompany)];
     
@@ -85,13 +76,10 @@
 
 - (IBAction)displayNewProductsList:(id)sender {
     
-    CGFloat prViewX = self.AddProductsButton.frame.origin.x;
-    CGFloat prViewY = self.AddProductsButton.frame.origin.y;
     CGFloat prViewWidth = 400.0;
     CGFloat prViewHeigh = 200.0;
     
-    
-    self.self.productsView = [[UIView alloc] initWithFrame:CGRectMake(prViewX+self.AddProductsButton.frame.size.width/2, prViewY+self.AddProductsButton.frame.size.height+(prViewHeigh+5)*self.self.productsViewCounter, prViewWidth, prViewHeigh)];
+    self.productsView = [[UIView alloc] initWithFrame:CGRectMake(100, 20+(prViewHeigh+5)*self.productsViewCounter, prViewWidth, prViewHeigh)];
     
     self.productsView.tag = self.productsViewCounter+100;
     self.productsView.layer.borderWidth = 1.0f;
@@ -100,8 +88,8 @@
     
     
     
-    UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(-25, 16, 25, 20 )];
-    num.text = [NSString stringWithFormat:@"#%lu", self.self.productsViewCounter+1];
+    UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(-30, 16, 30, 20 )];
+    num.text = [NSString stringWithFormat:@"#%lu", self.productsViewCounter+1];
     
     [self.productsView addSubview:num];
     
@@ -178,9 +166,11 @@
     [self.productsView addSubview:productURL];
     [self.productsView addSubview:productURLTextView];
     
-    [self.view addSubview:self.productsView];
+    [self.scrollView addSubview:self.productsView];
     
     self.productsViewCounter++;
+    
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.bounds.size.width, 20+self.productsViewCounter*(self.productsView.bounds.size.height+5));
     
 }
 
@@ -207,11 +197,11 @@
     
     UIButton *chooseProduct = (UIButton *) sender;
     
-    for (UIView *i in self.view.subviews) {
+    for (UIView *i in self.scrollView.subviews) {
         for (UIView *sub in i.subviews) {
             if ([sub isKindOfClass:[UIImageView class]] && sub.tag == -chooseProduct.tag) {
                 self.iv = (UIImageView *) sub;
-                NSLog(@"tag: %li", (long)sub.tag);
+//                NSLog(@"tag: %li", (long)sub.tag);
             }
         }
     }

@@ -24,7 +24,7 @@
 @property (retain, nonatomic) UIImageView *iv;
 
 @property (retain, nonatomic) Company *company;
-//@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic) BOOL fillView;
 
 
