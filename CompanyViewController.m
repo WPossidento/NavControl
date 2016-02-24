@@ -40,19 +40,6 @@
     self.sharedManager = [MyManager sharedManager];
 
     self.title = @"Mobile device makers";
-    
-    NSLog(@"%@", [NSString stringWithContentsOfURL:[NSURL URLWithString:@"http://download.finance.yahoo.com/d/quotes.csv?s=BP.L&f=sl1d1t1c1ohgv&e=.csv"] encoding:NSUTF8StringEncoding error:nil]);
-
-    
-}
-
--(void)toggleEdit{
-    [self.tableView setEditing:!self.tableView.editing animated:YES];
-    
-    if (self.tableView.editing)
-        [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
-    else
-        [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -97,10 +84,7 @@
     
     cell.textLabel.text = [[ self.sharedManager.companyList objectAtIndex:[indexPath row]  ] companyName];
     cell.imageView.image = [[self.sharedManager.companyList objectAtIndex:[indexPath row]] companyLogo];
-    
-    
-    
-    
+
     return cell;
 }
 
@@ -121,7 +105,8 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [self.sharedManager.companyList removeObjectAtIndex:indexPath.row];
+        [self.sharedManager deleteCompany:indexPath.row];
+        [self.sharedManager updatePositionForCompany];
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -137,7 +122,12 @@
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    [self.sharedManager.companyList exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+//    [self.sharedManager.companyList exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+    Company *comp = [self.sharedManager.companyList objectAtIndex:fromIndexPath.row];
+    [self.sharedManager.companyList removeObject:comp];
+    [self.sharedManager.companyList insertObject:comp atIndex:toIndexPath.row];
+    [self.sharedManager updatePositionForCompany];
+    [self.tableView reloadData];
 }
 
 
@@ -163,11 +153,12 @@
     if (self.tableView.editing == YES) {
         
         NSLog(@"EDIT MODE!!!");
+        self.sharedManager.isCompanyInEditMode = YES;
         [self editCompany];
 
         
     } else {
-    
+        
         [self.navigationController
          pushViewController:self.productViewController
          animated:YES];
@@ -181,6 +172,8 @@
     
     self.addCompanyViewController.title = @"Add New Company";
     
+    self.sharedManager.isCompanyInEditMode = NO;
+
     [self.navigationController
      pushViewController:self.addCompanyViewController animated:YES];
     
@@ -188,9 +181,6 @@
 
 -(void) editCompany {
     self.addCompanyViewController = [[AddCompanyViewController alloc] initWithNibName:@"AddCompanyViewController" bundle:nil];
-    
-//    self.addCompanyViewController = [[AddCompanyViewController alloc] initWithCompany: [self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber]];
-
     
     self.addCompanyViewController.title = [NSString stringWithFormat: @"Edit %@", [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyName]];
     

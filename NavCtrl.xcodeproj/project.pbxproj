@@ -23,6 +23,9 @@
 		48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A656E518163C1B00746D36 /* CompanyViewController.xib */; };
 		48A656EB18163F8700746D36 /* ProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A656E918163F8700746D36 /* ProductViewController.m */; };
 		48A656EE1816468000746D36 /* Sunflower.gif in Resources */ = {isa = PBXBuildFile; fileRef = 48A656ED1816468000746D36 /* Sunflower.gif */; };
+		B316CDFB1C75438200E6EE61 /* NavCtrl.db in Resources */ = {isa = PBXBuildFile; fileRef = B316CDFA1C75438200E6EE61 /* NavCtrl.db */; };
+		B316CDFD1C77B0CF00E6EE61 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B316CDFC1C77B0CF00E6EE61 /* libsqlite3.0.tbd */; };
+		B316CE011C7D1FB700E6EE61 /* noimg.png in Resources */ = {isa = PBXBuildFile; fileRef = B316CE001C7D1FB700E6EE61 /* noimg.png */; };
 		B39826E51C6147DE00871814 /* microsoft.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826E41C6147DE00871814 /* microsoft.png */; };
 		B39826EB1C614E8700871814 /* apple_s.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826E81C614E8700871814 /* apple_s.png */; };
 		B39826EC1C614E8700871814 /* samsung_s.png in Resources */ = {isa = PBXBuildFile; fileRef = B39826E91C614E8700871814 /* samsung_s.png */; };
@@ -84,6 +87,9 @@
 		48A656E818163F8700746D36 /* ProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductViewController.h; path = ../ProductViewController.h; sourceTree = "<group>"; };
 		48A656E918163F8700746D36 /* ProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProductViewController.m; path = ../ProductViewController.m; sourceTree = "<group>"; };
 		48A656ED1816468000746D36 /* Sunflower.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Sunflower.gif; sourceTree = "<group>"; };
+		B316CDFA1C75438200E6EE61 /* NavCtrl.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = NavCtrl.db; sourceTree = "<group>"; };
+		B316CDFC1C77B0CF00E6EE61 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		B316CE001C7D1FB700E6EE61 /* noimg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noimg.png; sourceTree = "<group>"; };
 		B39826E41C6147DE00871814 /* microsoft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = microsoft.png; sourceTree = "<group>"; };
 		B39826E81C614E8700871814 /* apple_s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple_s.png; sourceTree = "<group>"; };
 		B39826E91C614E8700871814 /* samsung_s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = samsung_s.png; sourceTree = "<group>"; };
@@ -124,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B316CDFD1C77B0CF00E6EE61 /* libsqlite3.0.tbd in Frameworks */,
 				B39827151C617AE200871814 /* WebKit.framework in Frameworks */,
 				48A656B718163BF200746D36 /* CoreGraphics.framework in Frameworks */,
 				48A656B918163BF200746D36 /* UIKit.framework in Frameworks */,
@@ -194,6 +201,7 @@
 		48A656B318163BF200746D36 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B316CDFC1C77B0CF00E6EE61 /* libsqlite3.0.tbd */,
 				B39827131C617AE200871814 /* WebKit.framework */,
 				B39827141C617AE200871814 /* WebKit.framework */,
 				48A656B418163BF200746D36 /* Foundation.framework */,
@@ -207,6 +215,7 @@
 		48A656BA18163BF200746D36 /* NavCtrl */ = {
 			isa = PBXGroup;
 			children = (
+				B316CDFA1C75438200E6EE61 /* NavCtrl.db */,
 				B398271F1C629CEF00871814 /* MyManager.h */,
 				B39827201C629CEF00871814 /* MyManager.m */,
 				483796CB1BCBF7A00062D5AB /* AppDelegate */,
@@ -226,6 +235,7 @@
 		48A656BB18163BF200746D36 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B316CE001C7D1FB700E6EE61 /* noimg.png */,
 				B39826FA1C6157F400871814 /* samsung */,
 				B39826FB1C61582500871814 /* apple */,
 				B39827021C6158C100871814 /* microsoft */,
@@ -428,6 +438,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B316CDFB1C75438200E6EE61 /* NavCtrl.db in Resources */,
 				B39826F81C6156C500871814 /* s4.png in Resources */,
 				B39827081C615AFA00871814 /* stouch.jpeg in Resources */,
 				B39827001C6158BD00871814 /* lumia550.png in Resources */,
@@ -436,6 +447,7 @@
 				48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */,
 				B39826F11C61541B00871814 /* ipod.png in Resources */,
 				B39826E51C6147DE00871814 /* microsoft.png in Resources */,
+				B316CE011C7D1FB700E6EE61 /* noimg.png in Resources */,
 				B39826F31C61548D00871814 /* iphone.png in Resources */,
 				48A656BF18163BF200746D36 /* InfoPlist.strings in Resources */,
 				B39826F91C6156C500871814 /* tab.png in Resources */,
@@ -608,7 +620,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NavCtrl/NavCtrl-Prefix.pch";
 				INFOPLIST_FILE = "NavCtrl/NavCtrl-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.vlgusakov;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vlgusakov.NavCtrl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -631,7 +644,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NavCtrl/NavCtrl-Prefix.pch";
 				INFOPLIST_FILE = "NavCtrl/NavCtrl-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.vlgusakov;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vlgusakov.NavCtrl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

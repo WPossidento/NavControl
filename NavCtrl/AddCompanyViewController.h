@@ -32,7 +32,7 @@
 - (IBAction)chooseCompanyLogo:(id)sender;
 - (IBAction)deleteImg:(id)sender;
 
--(void) fillProducts;
+//-(void) fillProducts;
 //- (id)initWithCompany:(Company *)comp;
 
 @end

@@ -41,7 +41,6 @@
     
     self.sharedManager = [MyManager sharedManager];
     
-
     self.tableView.allowsSelectionDuringEditing = YES;
     
 }
@@ -51,6 +50,8 @@
     [super viewWillAppear:animated];
     
     [self setEditing:NO animated:NO];
+    
+    NSLog(@"current company: %lu", self.sharedManager.currentCompanyNumber);
 
     [self.tableView reloadData];
 }
@@ -108,6 +109,7 @@
         
         
         [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber ] productsList] removeObjectAtIndex:indexPath.row];
+        [self.sharedManager deleteProduct:indexPath.row];
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             
@@ -123,7 +125,14 @@
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+//    [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+    
+    Product *prod = [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:fromIndexPath.row];
+    [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] removeObject:prod];
+    [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] insertObject:prod atIndex:toIndexPath.row];
+    
+    [self.sharedManager updatePositionForProducts];
+    
 }
 
 

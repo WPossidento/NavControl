@@ -35,8 +35,7 @@
     
     self.sharedManager = [MyManager sharedManager];
 
-    self.companyNameTextField.text =  [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyName];   //[self.company companyName];
-    self.companyLogo.image = [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyLogo];
+    
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveNewCompany)];
     
@@ -47,17 +46,25 @@
     self.companyLogo.layer.borderWidth = 1.0f;
     self.companyLogo.layer.cornerRadius = 5.0f;
     self.companyLogo.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    self.companyLogo.image = [UIImage imageNamed:@"noimg.png"];
     
-    
-    self.fillView = YES;
-    
-    for (int i = 0; i < [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] count]; i++) {
+    if (self.sharedManager.isCompanyInEditMode == YES) {
+        self.fillView = YES;
         
-        [self displayNewProductsList:nil];
+        self.companyNameTextField.text =  [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyName];   //[self.company companyName];
+        self.companyLogo.image = [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyLogo];
+    
+        for (int i = 0; i < [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] count]; i++) {
         
+            [self displayNewProductsList:nil];
+        
+        }
+    
+        self.fillView = NO;
     }
-    
-    self.fillView = NO;
+    else {
+        self.sharedManager.currentCompanyNumber = -1;
+    }
     
 }
 
@@ -127,6 +134,9 @@
     if (self.fillView == YES) {
         self.productLogoImageView.image = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.productsViewCounter] productLogo];
     }
+    else {
+        self.productLogoImageView.image = [UIImage imageNamed:@"noimg.png"];
+    }
     
     [self.productsView addSubview:productLogo];
     [self.productsView addSubview:self.productLogoImageView];
@@ -184,7 +194,8 @@
 }
 
 - (IBAction)deleteImg:(id)sender {
-    [self.companyLogo setImage:nil];
+//    [self.companyLogo setImage:nil];
+    [self.companyLogo setImage:[UIImage imageNamed:@"noimg.png"]];
 
 }
 
@@ -248,6 +259,11 @@
                     case 0: {
                         
                         newProduct.productName = [(UITextView *)tmp text];
+                        
+                        if ([newProduct.productName isEqualToString:@""]) {
+                            newProduct.productName = @"Unnamed Product";
+                        }
+                        
                         NSLog(@"productName: %@",newProduct.productName);
                         
                     }
@@ -255,6 +271,11 @@
                         
                     case 1: {
                         newProduct.productURL = [(UITextView *)tmp text];
+                        
+                        if ([newProduct.productURL isEqualToString:@""]) {
+                            newProduct.productURL = @"https://google.com";
+                        }
+                        
                         NSLog(@"productURL: %@",newProduct.productURL);
                         counter = 0;
                     }
@@ -278,18 +299,23 @@
         
     }
     
+    if ([self.companyNameTextField.text isEqualToString:@""]) {
+        self.companyNameTextField.text = @"Unnamed Company";
+    }
     
     Company *newComp = [[Company alloc] initWithName:self.companyNameTextField.text andLogo: self.companyLogo.image andProducts:products];
     
-    if (self.sharedManager.currentCompanyNumber < 0) {
+    if (self.sharedManager.currentCompanyNumber < 0) { // creating new company
         [self.sharedManager.companyList addObject:newComp];
+        [self.sharedManager saveNewCompanyToDB];
+        
     }
-    else {
+    else { // editing existing company
         [self.sharedManager.companyList replaceObjectAtIndex:self.sharedManager.currentCompanyNumber withObject:newComp];
     }
 
     [self.navigationController popToRootViewControllerAnimated:YES];
-    
+
     
     
 }

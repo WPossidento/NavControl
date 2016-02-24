@@ -8,7 +8,8 @@
 
 #import "EditProductViewController.h"
 
-@interface EditProductViewController () 
+@interface EditProductViewController ()
+
 @property (retain, nonatomic) IBOutlet UIView *productView;
 @property (retain, nonatomic) IBOutlet UITextField *productNameTextField;
 @property (retain, nonatomic) IBOutlet UIImageView *productLogoImageView;
@@ -59,6 +60,7 @@
     
     [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] replaceObjectAtIndex:self.sharedManager.currentProductNumber withObject:product];
     
+    [self.sharedManager saveEditedProduct];
     [self.navigationController popViewControllerAnimated:YES];
 
     [product release];
@@ -99,7 +101,8 @@
 }
 
 - (IBAction)deleteButtonPressed:(id)sender {
-    [self.productLogoImageView setImage:nil];
+//    [self.productLogoImageView setImage:nil];
+    [self.productLogoImageView setImage:[UIImage imageNamed:@"noimg.png"]];
 }
 
 - (void)dealloc {
