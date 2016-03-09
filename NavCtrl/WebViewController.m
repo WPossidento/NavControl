@@ -46,11 +46,11 @@
     webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, width, height) configuration:theConfiguration];
     [self.view addSubview:webView];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] productURL]]];
+    NSURL *productUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] url]]];
     
-    NSLog(@"URL: %@", [NSString stringWithFormat:@"%@",[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] productURL]]);
+    NSLog(@"URL: %@", [NSString stringWithFormat:@"%@",[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] url]]);
     
-    NSURLRequest *requestURL = [NSURLRequest requestWithURL:url];
+    NSURLRequest *requestURL = [NSURLRequest requestWithURL:productUrl];
     [webView loadRequest:requestURL];
     
     

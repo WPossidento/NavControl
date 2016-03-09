@@ -10,15 +10,22 @@
 
 static MyManager *sharedMyManager = nil;
 
+@interface MyManager ()
+
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+@end
+
 @implementation MyManager
 
 {
-    sqlite3 *NavCtrlDB;
-
     NSFileManager *fileManager;
-    sqlite3_stmt *statement;
-    NSString *querySQL;
-
+    NSEntityDescription *companyEntityDescription;
+    NSEntityDescription *productEntityDescription;
+    bool isFirstLaunch;
+    NSError *error;
 }
 
 
@@ -70,437 +77,488 @@ static MyManager *sharedMyManager = nil;
     return self;
 }
 
+#pragma mark - Init
 - (id)init {
     if (self = [super init]) {
         NSLog(@"Init DAO");
         
-//        Product *iphone = [[Product alloc] initWithName:@"iPhone" andLogo:[UIImage imageNamed:@"iphone.png"] andURL:@"https://apple.com/iphone"];
-//        Product *ipod = [[Product alloc] initWithName:@"iPod" andLogo:[UIImage imageNamed:@"ipod.png"] andURL:@"https://apple.com/ipod"];
-//        Product *ipad = [[Product alloc] initWithName:@"iPad" andLogo:[UIImage imageNamed:@"ipad.png"] andURL:@"https://apple.com/ipad"];
-//        
-//        Company *apple = [[Company alloc] initWithName:@"Apple mobile devices" andLogo:[UIImage imageNamed:@"apple_s.png"] andProducts:[NSMutableArray arrayWithObjects: iphone, ipod, ipad, nil]];
-//        
-//        Product *galaxyS4 = [[Product alloc] initWithName:@"Galaxy S4" andLogo:[UIImage imageNamed:@"s4.png"] andURL:@"http://www.samsung.com/global/microsite/galaxys4/"];
-//        Product *galaxyNote = [[Product alloc] initWithName:@"Galaxy Note" andLogo:[UIImage imageNamed:@"note.png"] andURL:@"http://www.samsung.com/global/microsite/galaxynote/"];
-//        Product *galaxyTab = [[Product alloc] initWithName:@"Galaxy Tab" andLogo:[UIImage imageNamed:@"tab.png"] andURL:@"http://www.samsung.com/global/microsite/galaxytab/"];
-//        
-//        Company *samsung = [[Company alloc] initWithName:@"Samsung mobile devices" andLogo:[UIImage imageNamed:@"samsung_s.png"] andProducts:[NSMutableArray arrayWithObjects: galaxyS4, galaxyNote, galaxyTab, nil]];
-//        
-//        Product *lumia950XL = [[Product alloc] initWithName:@"Lumia 950XL" andLogo:[UIImage imageNamed:@"lumia950xl.png"] andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia950-xl-dual-sim/"];
-//        Product *lumia550 = [[Product alloc] initWithName:@"Lumia 550" andLogo:[UIImage imageNamed:@"lumia550.png"] andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia550/"];
-//        Product *lumia1520 = [[Product alloc] initWithName:@"Lumia 1520" andLogo:[UIImage imageNamed:@"lumia1520.png"] andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia1520/"];
-//        
-//        Company *microsoft = [[Company alloc] initWithName:@"Microsoft mobile devices" andLogo:[UIImage imageNamed:@"microsoft.png"] andProducts:[NSMutableArray arrayWithObjects:lumia950XL, lumia550, lumia1520, nil]];
-//        
-//        Product *signature = [[Product alloc] initWithName:@"Signature" andLogo:[UIImage imageNamed:@"signature.png"] andURL:@"http://www.vertu.com/us/en/collections/signature/"];
-//        Product *stouch = [[Product alloc] initWithName:@"The New Signature Touch" andLogo:[UIImage imageNamed:@"stouch.jpeg"] andURL:@"http://www.vertu.com/us/en/collections/signature-touch/"];
-//        Product *aster = [[Product alloc] initWithName:@"Aster" andLogo:[UIImage imageNamed:@"aster.png"] andURL:@"http://www.vertu.com/us/en/collections/aster/"];
-//
-//        Company *vertu = [[Company alloc] initWithName:@"Vertu mobile devices" andLogo:[UIImage imageNamed:@"vertu_s.png"] andProducts:[NSMutableArray arrayWithObjects: signature, stouch, aster, nil]];
+        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         
-//        self.companyList = [[NSMutableArray alloc] initWithObjects: apple, samsung, microsoft, vertu, nil];
+        self.imagesPath = [documentsPath stringByAppendingPathComponent:@"images"];
         
-        self.companyList = [[[NSMutableArray alloc] init] autorelease];
-        
-        
-        NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); //path to device's Documents folder
-        NSString *docPath = [path objectAtIndex:0];
         fileManager = [NSFileManager defaultManager];
-        self.imagesPath = [docPath stringByAppendingPathComponent:@"images"];
-        self.dbPathString = [docPath stringByAppendingPathComponent:@"NavCtrl.db"]; // path to .db file on device
-
-        [self createDataBase];
-
+        
+        //check for the first launch
+        
+        if (![fileManager fileExistsAtPath: [documentsPath stringByAppendingPathComponent:@"Core_Data.sqlite"]])
+            
+            isFirstLaunch = true;
+        else
+            isFirstLaunch = false;
+        
+        companyEntityDescription = [NSEntityDescription entityForName:@"Company" inManagedObjectContext:self.managedObjectContext];
+        
+        productEntityDescription = [NSEntityDescription entityForName:@"Product" inManagedObjectContext:self.managedObjectContext];
+        
+        if (isFirstLaunch == true ) {
+            [self createDataAtFirstLaunch];
+        }
+        else {
+            //get companies from coredata;
+            [self getCompaniesFromCoreData];
+        }
+        
+        self.managedObjectContext.undoManager = [[[NSUndoManager alloc] init] autorelease];
+        
     }
     return self;
 }
 
--(void)createDataBase
-{
-    NSError *error;
+- (void) createDataAtFirstLaunch {
+    
+    Product *iphone = [[Product alloc] initWithName:@"iPhone" andLogo:@"iphone.png" andURL:@"https://apple.com/iphone"];
+    Product *ipod = [[Product alloc] initWithName:@"iPod" andLogo:@"ipod.png" andURL:@"https://apple.com/ipod"];
+    Product *ipad = [[Product alloc] initWithName:@"iPad" andLogo:@"ipad.png" andURL:@"https://apple.com/ipad"];
+    
+    Company *apple = [[Company alloc] initWithName:@"Apple mobile devices" andLogo:@"apple_s.png" andProducts:[NSMutableArray arrayWithObjects: iphone, ipod, ipad, nil]];
+    
+    Product *galaxyS4 = [[Product alloc] initWithName:@"Galaxy S4" andLogo:@"s4.png" andURL:@"http://www.samsung.com/global/microsite/galaxys4/"];
+    Product *galaxyNote = [[Product alloc] initWithName:@"Galaxy Note" andLogo:@"note.png" andURL:@"http://www.samsung.com/global/microsite/galaxynote/"];
+    Product *galaxyTab = [[Product alloc] initWithName:@"Galaxy Tab" andLogo:@"tab.png" andURL:@"http://www.samsung.com/global/microsite/galaxytab/"];
+    
+    Company *samsung = [[Company alloc] initWithName:@"Samsung mobile devices" andLogo:@"samsung_s.png" andProducts:[NSMutableArray arrayWithObjects: galaxyS4, galaxyNote, galaxyTab, nil]];
+    
+    Product *lumia950XL = [[Product alloc] initWithName:@"Lumia 950XL" andLogo:@"lumia950xl.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia950-xl-dual-sim/"];
+    Product *lumia550 = [[Product alloc] initWithName:@"Lumia 550" andLogo:@"lumia550.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia550/"];
+    Product *lumia1520 = [[Product alloc] initWithName:@"Lumia 1520" andLogo:@"lumia1520.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia1520/"];
+    
+    Company *microsoft = [[Company alloc] initWithName:@"Microsoft mobile devices" andLogo:@"microsoft.png" andProducts:[NSMutableArray arrayWithObjects:lumia950XL, lumia550, lumia1520, nil]];
+    
+    Product *signature = [[Product alloc] initWithName:@"Signature" andLogo:@"signature.png" andURL:@"http://www.vertu.com/us/en/collections/signature/"];
+    Product *stouch = [[Product alloc] initWithName:@"The New Signature Touch" andLogo:@"stouch.jpeg" andURL:@"http://www.vertu.com/us/en/collections/signature-touch/"];
+    Product *aster = [[Product alloc] initWithName:@"Aster" andLogo:@"aster.png" andURL:@"http://www.vertu.com/us/en/collections/aster/"];
+    
+    Company *vertu = [[Company alloc] initWithName:@"Vertu mobile devices" andLogo:@"vertu_s.png" andProducts:[NSMutableArray arrayWithObjects: signature, stouch, aster, nil]];
+    
+    self.companyList = [[NSMutableArray alloc] initWithObjects:apple, samsung, microsoft, vertu, nil];
+    
+    //create images folder
+    
+    [self createImagesFolder];
+    
+    //fill Core Data database
+    [self fillCoreDataDB];
+    
+    NSLog(@"First launch data CREATED");
+}
 
-    NSString *pathToMainBundle = [[NSBundle mainBundle] pathForResource:@"NavCtrl" ofType:@"db"]; //path to .db file inside the project
-    NSURL *url = [NSURL fileURLWithPath:pathToMainBundle];
-    NSData *dataDB = [NSData dataWithContentsOfURL:url]; // actual .db file as NSData
-    
-    if (![fileManager fileExistsAtPath:self.dbPathString])
-    {
-        //create database
-        if (sqlite3_open([self.dbPathString UTF8String], &NavCtrlDB)== SQLITE_OK)
-        {
-            [dataDB writeToFile:self.dbPathString atomically:YES];
-            sqlite3_close(NavCtrlDB);
-        }
-        else
-            NSLog(@"Unable to open db");
-    }
-    
+-(void) createImagesFolder {
     
     if (![fileManager fileExistsAtPath:self.imagesPath]) {
         [fileManager createDirectoryAtPath:self.imagesPath withIntermediateDirectories:NO attributes:nil error:&error];
         NSLog(@"'Images' folder created");
-        [self loadCompanies:0];
-        [self loadProducts:0];
         
         //load additional images
         NSString *imageFile = [self.imagesPath stringByAppendingPathComponent:[NSString stringWithFormat:@"noimg.png"]];
         
-        if (![fileManager fileExistsAtPath:imageFile]) {
-            NSLog(@"noimg.png image loaded");
-            NSData *imgData = UIImagePNGRepresentation([UIImage imageNamed:@"noimg.png"]);
-            [imgData writeToFile:imageFile atomically:YES];
-        }
+        NSLog(@"noimg.png image loaded");
+        NSData *imgData = UIImagePNGRepresentation([UIImage imageNamed:@"noimg.png"]);
+        [imgData writeToFile:imageFile atomically:YES];
+        
         
     }
     else {
         NSLog(@"Failed to create 'images' folder OR it already exists");
-        [self loadCompanies:1];
-        [self loadProducts:1];
     }
+}
+
+#pragma mark - Core Data stack
+
+// Returns the managed object context for the application.
+// If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
+- (NSManagedObjectContext *)managedObjectContext
+{
+    if (_managedObjectContext != nil) {
+        return _managedObjectContext;
+    }
+    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    if (coordinator != nil) {
+        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+    }
+    return _managedObjectContext;
+}
+
+// Returns the managed object model for the application.
+// If the model doesn't already exist, it is created from the application's model.
+- (NSManagedObjectModel *)managedObjectModel
+{
+    if (_managedObjectModel != nil) {
+        return _managedObjectModel;
+    }
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Core_Data" withExtension:@"momd"];
+    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    return _managedObjectModel;
+}
+
+// Returns the persistent store coordinator for the application.
+// If the coordinator doesn't already exist, it is created and the application's store added to it.
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{
+    if (_persistentStoreCoordinator != nil) {
+        return _persistentStoreCoordinator;
+    }
+    
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Core_Data.sqlite"];
+    
+    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+        
+//         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
+//         * Simply deleting the existing store:
+        //[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+
+         //@{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES}
+
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return _persistentStoreCoordinator;
+}
+
+
+-(void) fillCoreDataDB {
+    
+    int i = 1024;
+    int j = 1024;
+    
+    for (Company *newCompany in self.companyList) {
+        
+        Company_MO *newCompanyMO = [[Company_MO alloc] initWithEntity:companyEntityDescription insertIntoManagedObjectContext: self.managedObjectContext];
+        
+        [newCompanyMO setValue: newCompany.name forKey:@"name"];
+        [newCompanyMO setValue: newCompany.logo forKey:@"logo"];
+        [newCompanyMO setValue:@(i) forKey:@"pos"];
+        i+=1024;
+        
+        //copy company image to 'images' folder
+        
+        NSString *imageFile = [self.imagesPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",newCompany.name]];
+        
+        if (![fileManager fileExistsAtPath:imageFile]) {
+            NSLog(@"company image loaded");
+            NSData *companyImgData = UIImagePNGRepresentation([UIImage imageNamed:newCompany.logo]);
+            [companyImgData writeToFile:imageFile atomically:YES];
+        }
+        
+        //        NSMutableSet *productsList = [newCompanyMO mutableSetValueForKey:@"productsList"];
+        
+        for (Product *newProduct in newCompany.productsList) {
+            
+            Product_MO *newProductMO = [[Product_MO alloc] initWithEntity:productEntityDescription insertIntoManagedObjectContext: self.managedObjectContext];
+            
+            [newProductMO setValue:newProduct.name forKey:@"name"];
+            [newProductMO setValue:newProduct.logo forKey:@"logo"];
+            [newProductMO setValue:newProduct.url forKey:@"url"];
+            [newProductMO setValue:@(j) forKey:@"pos"];
+            j+=1024;
+            
+            [newCompanyMO addProductsListObject:newProductMO];
+            //            [newProductMO setCompany:newCompanyMO]; another way
+            //            [productsList addObject: newProductMO]; another way
+            
+            //copy product image to 'images' folder
+            
+            NSString *productImageFile = [self.imagesPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",newProduct.name]];
+            
+            if (![fileManager fileExistsAtPath:productImageFile]) {
+                NSLog(@"product image loaded");
+                NSData *productImgData = UIImagePNGRepresentation([UIImage imageNamed:newProduct.logo]);
+                [productImgData writeToFile:productImageFile atomically:YES];
+            }
+            
+        }
+        
+        j = 1024;
+        
+        
+        [self saveAllToCoreData];
+        
+    }
+
     
 }
 
--(void) loadCompanies: (int) num {
-    
-    if (sqlite3_open([self.dbPathString UTF8String], &NavCtrlDB)== SQLITE_OK) // init companies
-    {
-        NSLog(@"---Connected to DB---");
-        //[fileManager removeItemAtPath:dbPathString error:nil];
-        
-        querySQL = [NSString stringWithFormat:@"SELECT * FROM company ORDER BY position"];
-        
-        const char *query_sql = [querySQL UTF8String];
-        if (sqlite3_prepare(NavCtrlDB, query_sql, -1, &statement, NULL) == SQLITE_OK)
-        {
-            while (sqlite3_step(statement)== SQLITE_ROW)
-            {
-                NSString *name = [[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
-                NSString *logo = [[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
-                
-                //NSLog(@"name:%@", name); //company name
-                //NSLog(@"logo:%@", logo); //company logo
-                
-                Company *newCompany;
-                
-                if (num == 0) {
-                    newCompany = [[Company alloc] initWithName:name andLogo:[UIImage imageNamed:logo] andProducts:nil];
-                }
-                else {
-                    newCompany = [[Company alloc] initWithName:name andLogo:[UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.png",self.imagesPath, name]] andProducts:nil];
-                }
-                
+-(void) getCompaniesFromCoreData {
+   
+    self.companyList = [[[NSMutableArray alloc] init] autorelease];
 
-                NSString *imageFile = [self.imagesPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",newCompany.companyName]];
-                
-                if (![fileManager fileExistsAtPath:imageFile]) {
-                    NSLog(@"company image loaded");
-                    NSData *companyImgData = UIImagePNGRepresentation([UIImage imageNamed:logo]);
-                    [companyImgData writeToFile:imageFile atomically:YES];
-                }
-                
-                
-                [self.companyList addObject:newCompany];
-                
-                [name release];
-                [logo release];
-                [newCompany release];
+    // Fetching
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Company"];
+    
+    // Add Sort Descriptor
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"pos" ascending:YES];
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    
+    // Execute Fetch Request
+    NSError *fetchError = nil;
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&fetchError];
+    
+    if (!fetchError) {
+        for (Company_MO *managedObject in result) {
+            
+            NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"pos" ascending:YES]];
+            
+            NSMutableArray *productsListMO = [NSMutableArray arrayWithArray:[[managedObject.productsList allObjects] sortedArrayUsingDescriptors:sortDescriptors]];
+
+            NSMutableArray *productsList = [[NSMutableArray alloc] init];
+            
+            for (Product_MO *productMO in productsListMO) {
+                Product *newProduct = [[Product alloc] initWithName:productMO.name andLogo:productMO.logo andURL:productMO.url];
+                [productsList addObject:newProduct];
+                [newProduct release];
             }
+            
+            Company *newCompany = [[Company alloc] initWithName:managedObject.name andLogo:managedObject.logo andProducts: productsList];
+            
+            [productsList release];
+            
+            newCompany.pos = managedObject.pos;
+            
+            [self.companyList addObject:newCompany];
         }
-        NSLog(@"---Loaded Companies List from DB---");
-        sqlite3_close(NavCtrlDB);
+        
+    } else {
+        NSLog(@"Error fetching data.");
+        NSLog(@"%@, %@", fetchError, fetchError.localizedDescription);
+    }
+}
+
+-(void) saveNewCompanyToCoreData {
+    Company_MO *newCompanyMO = [[Company_MO alloc] initWithEntity:companyEntityDescription insertIntoManagedObjectContext:self.managedObjectContext];
+    
+    [newCompanyMO setValue:self.companyList.lastObject.name forKey:@"name"];
+    [newCompanyMO setValue:self.companyList.lastObject.name forKey:@"logo"];
+    [newCompanyMO setValue:@(self.companyList.count-1) forKey:@"pos"];
+    
+    int j = 1024;
+    
+    for (Product *product in self.companyList.lastObject.productsList) {
+        Product_MO *productMO = [[Product_MO alloc] initWithEntity:productEntityDescription insertIntoManagedObjectContext:self.managedObjectContext];
+        [productMO setValue:product.name forKey:@"name"];
+        [productMO setValue:product.name forKey:@"logo"];
+        [productMO setValue:product.url forKey:@"url"];
+        [productMO setValue:@(j) forKey:@"pos"];
+        
+        [newCompanyMO addProductsListObject:productMO];
+        j+=1024;
+    }
+    
+    [self saveAllToCoreData];
+ 
+}
+
+-(void) updatePositionInCoreDataForCompaniesFrom: (NSUInteger) fromIndex To: (NSUInteger) toIndex {
+    
+    NSNumber *newPosition = @(0);
+    // Fetching
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Company"];
+    // Create Predicate
+    NSPredicate *predicate;
+    
+    if (toIndex == 0) {
+        
+        predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", self.companyList.firstObject.name];
+        
     }
     else
-        NSLog(@"Unable to open db");
-    
-}
-
--(void) loadProducts: (int) num {
-    
-    int res = sqlite3_open([self.dbPathString UTF8String], &NavCtrlDB);
-    
-    if (res == SQLITE_OK) // init products
-    {
-        for (int i = 0; i < self.companyList.count; i++) { //for begin
-            
-            NSMutableArray *products = [[NSMutableArray alloc] init];
-            
-            querySQL = [NSString stringWithFormat:@"SELECT * FROM product WHERE company_id = (SELECT id FROM company WHERE position IS %i) ORDER BY position" , i];
-            
-            const char *query_sql = [querySQL UTF8String];
-            if (sqlite3_prepare(NavCtrlDB, query_sql, -1, &statement, NULL) == SQLITE_OK)
-            {
-                while (sqlite3_step(statement)== SQLITE_ROW)
-                {
-                    NSString *pname = [[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
-                    NSString *plogo = [[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
-                    NSString *purl = [[NSString alloc]initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
-                    
-                    Product *newProduct;
-                    
-                    if (num == 0) {
-                        newProduct = [[Product alloc] initWithName:pname andLogo:[UIImage imageNamed:plogo] andURL:purl];
-                    }
-                    else {
-                        newProduct = [[Product alloc] initWithName:pname andLogo:[UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.png",self.imagesPath, pname]] andURL:purl];
-                    }
-                    [pname release];
-                    [purl release];
-                    NSString *imageFile = [self.imagesPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",newProduct.productName]];
-                    
-                    if (![fileManager fileExistsAtPath:imageFile]) {
-                        NSLog(@"product image loaded");
-                        NSData *companyImgData = UIImagePNGRepresentation([UIImage imageNamed:plogo]);
-                        [companyImgData writeToFile:imageFile atomically:YES];
-                    }
-                    [plogo release];
-                    [products addObject:newProduct];
-                    [newProduct release];
-                    
-                }
-                [self.companyList objectAtIndex:i].productsList = products;
-            }
-            [products release];
+        
+        if (toIndex == self.companyList.count-1) {
+            predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", self.companyList.lastObject.name];
         }
-        NSLog(@"---Loaded Products List from DB---");
-        sqlite3_close(NavCtrlDB);
+        else
+        
+        {
+        
+        predicate = [NSPredicate predicateWithFormat:@"%K == %@ || %K == %@", @"name", [self.companyList objectAtIndex:toIndex+1].name, @"name", [self.companyList objectAtIndex:toIndex].name];
+        }
+    
+    [fetchRequest setPredicate:predicate];
+    
+    // Execute Fetch Request
+    NSError *fetchError = nil;
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&fetchError];
+    
+    if (!fetchError) {
+        for (Company_MO *managedObject in result) {
+            NSLog(@"pos: %@", managedObject.pos);
+            newPosition = @([managedObject.pos integerValue] + [newPosition integerValue]);
+        }
+        
+    } else {
+        NSLog(@"Error fetching data.");
+        NSLog(@"%@, %@", fetchError, fetchError.localizedDescription);
+    }
+    
+    if (toIndex != self.companyList.count-1) {
+        newPosition = @(newPosition.integerValue/2);
     }
     else
-    {
-        NSLog(@"Unable to open db");
+        newPosition = @(newPosition.integerValue + 1024);
+    
+    predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", [self.companyList objectAtIndex:fromIndex].name];
+    
+    [fetchRequest setPredicate:predicate];
+    
+    result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&fetchError];
+    
+    if (!fetchError) {
+        for (Company_MO *companyMO in result) {
+            NSLog(@"pos: %@", companyMO.pos);
+            [companyMO setValue:newPosition forKey:@"pos"];
+        }
+        
+    } else {
+        NSLog(@"Error fetching data.");
+        NSLog(@"%@, %@", fetchError, fetchError.localizedDescription);
     }
+    
+    [self saveAllToCoreData];
+
     
     
     
 }
 
--(void) saveNewCompanyToDB { // new company is the last object in self.companyList
+-(void) updatePositionInCoreDataForProductsFrom: (NSUInteger) fromIndex To: (NSUInteger) toIndex { // did not finish
     
-    int res = sqlite3_open([self.dbPathString UTF8String], &NavCtrlDB);
-    char *error;
+    NSNumber *newPosition = @(0);
+    // Fetching
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Product"];
+    // Create Predicate
+    NSPredicate *predicate;
     
-    if (res == SQLITE_OK) // init
-    {
-        NSString *name = [self.companyList.lastObject companyName];
-        UIImage *logo = [self.companyList.lastObject companyLogo];
-        NSData *imgAsData = UIImagePNGRepresentation(logo);
-        NSString *imageFile = [self.imagesPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",name]];
-        [imgAsData writeToFile:imageFile atomically:YES];
+    if (toIndex == 0) {
         
-        NSString *logoStr = @"noimg.png"; // default img
+        predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", [self.companyList objectAtIndex:self.currentCompanyNumber].productsList.firstObject.name];
         
-        if ( [self.companyList.lastObject companyLogo] != nil) {
-            logoStr = [NSString stringWithFormat:@"%@.png",name];
-        }
-        
-        querySQL = [NSString stringWithFormat:@"INSERT INTO company(name, logo, position) VALUES('%s','%s', %lu)", [name UTF8String], [logoStr UTF8String], self.companyList.count-1];
-        
-        if (sqlite3_exec(NavCtrlDB, [querySQL UTF8String], NULL, NULL, &error) == SQLITE_OK)
-        {
-            NSLog(@"---New Company Saved---");
-        }
-        
-        int i = 0;
-        for (Product *newProduct in self.companyList.lastObject.productsList) {
-            querySQL = [NSString stringWithFormat:@"INSERT INTO product(name, logo, url, company_id, position) VALUES ('%s','%s.png','%s',%lu, %i)", [newProduct.productName UTF8String], [newProduct.productName UTF8String], [newProduct.productURL UTF8String], self.companyList.count, i];
-            
-            
-            if (sqlite3_exec(NavCtrlDB, [querySQL UTF8String], NULL, NULL, &error) == SQLITE_OK)
-            {
-                NSString *name = [[[self.companyList.lastObject productsList] objectAtIndex:i] productName];
-                UIImage *logo = [[[self.companyList.lastObject productsList] objectAtIndex:i] productLogo];
-                NSData *imgAsData = UIImagePNGRepresentation(logo);
-                NSString *imageFile = [self.imagesPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",name]];
-                [imgAsData writeToFile:imageFile atomically:YES];
-
-                NSLog(@"---New Product SAVED---");
-            }
-            
-            i++;
-            
-        }
-    }
-    else {
-        NSLog(@"Unable to open DB");
-    }
-    
-    sqlite3_close(NavCtrlDB);
-
-}
-
--(void) deleteCompany:(NSInteger) position {
-    
-    int res = sqlite3_open([self.dbPathString UTF8String], &NavCtrlDB);
-    char *error;
-    
-    if (res == SQLITE_OK) // init products
-    {
-        
-        querySQL = [NSString stringWithFormat:@"DELETE FROM product WHERE company_id IS (SELECT id FROM company WHERE position IS %lu)", position];
-        
-        if (sqlite3_exec(NavCtrlDB, [querySQL UTF8String], NULL, NULL, &error) == SQLITE_OK)
-        {
-            NSLog(@"---ALL PRODUCTS ASSOCIATED WITH COMPANY DELETED---");
-            for (int i = 0; i < [[self.companyList objectAtIndex:position] productsList].count; i++) {
-                
-                NSString *path = [NSString stringWithFormat:@"%@/%@.png",self.imagesPath,[[[[self.companyList objectAtIndex:position] productsList] objectAtIndex:i] productName]];
-                
-                if ([fileManager fileExistsAtPath:path]) {
-                    [fileManager removeItemAtPath: path error:nil];
-                    NSLog(@"---PRODUCT IMAGE DELETED---");
-                }
-                else {
-                    NSLog(@"ERROR: Couldn't delete PRODUCT image");
-                }
-                
-            }
-        }
-        else {
-            NSLog(@"---ERROR DELETING PRODUCTS---");
-
-        }
-        
-        querySQL = [NSString stringWithFormat:@"DELETE FROM company WHERE position IS %lu", position];
-        
-        if (sqlite3_exec(NavCtrlDB, [querySQL UTF8String], NULL, NULL, &error) == SQLITE_OK)
-        {
-            NSLog(@"---COMPANY DELETED---");
-            NSString *path = [NSString stringWithFormat:@"%@/%@.png",self.imagesPath,[[self.companyList objectAtIndex:position] companyName]];
-            if ([fileManager fileExistsAtPath:path]) {
-                [fileManager removeItemAtPath: path error:nil];
-                 NSLog(@"---COMPANY IMAGE DELETED---");
-            }
-            else {
-                NSLog(@"No image found");
-            }
-            
-        }
-        else {
-            NSLog(@"---ERROR DELETING COMPANY---");
-            
-        }
-        
-        [self.companyList removeObjectAtIndex:position];
-    }
-    else {
-        NSLog(@"Unable to open DB");
-    }
-    
-    sqlite3_close(NavCtrlDB);
-    
-}
-
--(void) deleteProduct:(NSInteger) position {
-    
-    int res = sqlite3_open([self.dbPathString UTF8String], &NavCtrlDB);
-    char *error;
-    
-    if (res == SQLITE_OK) // init products
-    {
-        querySQL = [NSString stringWithFormat:@"DELETE FROM product WHERE position IS %lu AND company_id IS (SELECT id FROM company WHERE position IS %lu)", position, self.currentCompanyNumber];
-        
-        if (sqlite3_exec(NavCtrlDB, [querySQL UTF8String], NULL, NULL, &error) == SQLITE_OK)
-        {
-            NSLog(@"---PRODUCT DELETED---");
-        }
-        
-    }
-    else {
-        NSLog(@"Unable to open DB");
-    }
-    
-    sqlite3_close(NavCtrlDB);
-    
-}
-
--(void) updatePositionForCompany  {
-    
-    int res = sqlite3_open([self.dbPathString UTF8String], &NavCtrlDB);
-    char *error;
-    if (res == SQLITE_OK) // init
-    {
-        for (int i = 0; i < self.companyList.count; i++) { //for begin
-            querySQL = [NSString stringWithFormat:@"UPDATE company SET position = %i WHERE name ='%s'" , i, [[[self.companyList objectAtIndex:i] companyName] UTF8String]];
-            
-            if (sqlite3_exec(NavCtrlDB, [querySQL UTF8String], NULL, NULL, &error) == SQLITE_OK)
-            {
-                NSLog(@"---POSITION UPDATED---");
-            }
-            else {
-                NSLog(@"---FAILED TO UPDATE POSITION---");
-            }
-        }
-        
-        NSLog(@"---POSITION UPDATING FINISHED---");
-        sqlite3_close(NavCtrlDB);
     }
     else
-    {
-        NSLog(@"Unable to open db");
-        NSLog(@"error: %i", res);
-        NSLog(@"dbpath: %s",[self.dbPathString UTF8String]);
-    }
-    
-}
-
--(void) updatePositionForProducts  {
-    
-    int res = sqlite3_open([self.dbPathString UTF8String], &NavCtrlDB);
-    char *error;
-    if (res == SQLITE_OK) // init
-    {
-        for (int i = 0; i < [[self.companyList objectAtIndex:self.currentCompanyNumber] productsList].count; i++) { //for begin
-            querySQL = [NSString stringWithFormat:@"UPDATE product SET position = %i WHERE name ='%s'" , i, [[[[[self.companyList objectAtIndex:self.currentCompanyNumber] productsList] objectAtIndex:i] productName] UTF8String]];
+        
+        if (toIndex == [self.companyList objectAtIndex:self.currentCompanyNumber].productsList.count-1) {
             
-            if (sqlite3_exec(NavCtrlDB, [querySQL UTF8String], NULL, NULL, &error) == SQLITE_OK)
-            {
-                NSLog(@"---POSITION UPDATED---");
-            }
-            else {
-                NSLog(@"---FAILED TO UPDATE POSITION---");
-            }
+            predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", [self.companyList objectAtIndex:self.currentCompanyNumber].productsList.lastObject.name];
+        }
+        else
+            
+        {
+            
+            predicate = [NSPredicate predicateWithFormat:@"%K == %@ || %K == %@", @"name", [[self.companyList objectAtIndex:self.currentCompanyNumber].productsList objectAtIndex:toIndex+1].name, @"name", [[self.companyList objectAtIndex:self.currentCompanyNumber].productsList objectAtIndex:toIndex].name];
+        }
+    
+    [fetchRequest setPredicate:predicate];
+    
+    // Execute Fetch Request
+    NSError *fetchError = nil;
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&fetchError];
+    
+    if (!fetchError) {
+        for (Product_MO *managedObject in result) {
+            NSLog(@"pos: %@", managedObject.pos);
+            newPosition = @([managedObject.pos integerValue] + [newPosition integerValue]);
         }
         
-        NSLog(@"---POSITION UPDATING FINISHED---");
-        sqlite3_close(NavCtrlDB);
+    } else {
+        NSLog(@"Error fetching data.");
+        NSLog(@"%@, %@", fetchError, fetchError.localizedDescription);
+    }
+    
+    if (toIndex != [self.companyList objectAtIndex:self.currentCompanyNumber].productsList.count-1) {
+        newPosition = @(newPosition.integerValue/2);
     }
     else
-    {
-        NSLog(@"Unable to open db");
-        NSLog(@"error: %i", res);
-        NSLog(@"dbpath: %s",[self.dbPathString UTF8String]);
+        newPosition = @(newPosition.integerValue + 1024);
+    
+    predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", [[self.companyList objectAtIndex:self.currentCompanyNumber].productsList objectAtIndex:fromIndex].name];
+    
+    [fetchRequest setPredicate:predicate];
+    
+    result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&fetchError];
+    
+    if (!fetchError) {
+        for (Product_MO *productMO in result) {
+            NSLog(@"pos: %@", productMO.pos);
+            [productMO setValue:newPosition forKey:@"pos"];
+        }
+        
+    } else {
+        NSLog(@"Error fetching data.");
+        NSLog(@"%@, %@", fetchError, fetchError.localizedDescription);
     }
+    
+    [self saveAllToCoreData];
+    
+    
+    
     
 }
 
--(void) saveEditedProduct {
-    int res = sqlite3_open([self.dbPathString UTF8String], &NavCtrlDB);
-    char *error;
+
+-(void) deleteCompanyFromCoreData:(NSUInteger)companyIndex {
     
-    if (res == SQLITE_OK) // init
-    {
-        NSString *name = [[[[self.companyList objectAtIndex:self.currentCompanyNumber] productsList] objectAtIndex:self.currentProductNumber] productName];
-        UIImage *logo = [[[[self.companyList objectAtIndex:self.currentCompanyNumber] productsList] objectAtIndex:self.currentProductNumber] productLogo];
-        NSString *url = [[[[self.companyList objectAtIndex:self.currentCompanyNumber] productsList] objectAtIndex:self.currentProductNumber] productURL];
-        
-        NSData *imgAsData = UIImagePNGRepresentation(logo);
-        NSString *imageFile = [self.imagesPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",name]];
-        [imgAsData writeToFile:imageFile atomically:YES];
-        
-        
-        querySQL = [NSString stringWithFormat:@"UPDATE product SET name = '%s', logo = '%s.png', url = '%s' WHERE company_id = (SELECT id FROM company WHERE position IS %lu) AND position = %lu", [name UTF8String], [name UTF8String], [url UTF8String], self.currentCompanyNumber, self.currentProductNumber];
-        
-        if (sqlite3_exec(NavCtrlDB, [querySQL UTF8String], NULL, NULL, &error) == SQLITE_OK)
-        {
-            NSLog(@"---Product Successfully Edited---");
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Company"];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", [self.companyList objectAtIndex:companyIndex].name];
+    [fetchRequest setPredicate:predicate];
+    // Execute Fetch Request
+    NSError *fetchError = nil;
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&fetchError];
+    
+    if (!fetchError) {
+        for (Company_MO *managedObject in result) {
+            NSLog(@"company %@ deleted from Core Data", managedObject.name);
+            [self.managedObjectContext deleteObject:managedObject];
+            [self saveAllToCoreData];
         }
         
+    } else {
+        NSLog(@"Error fetching data.");
+        NSLog(@"%@, %@", fetchError, fetchError.localizedDescription);
     }
-    else {
-        NSLog(@"Unable to open DB");
-    }
-    
-    sqlite3_close(NavCtrlDB);
+
+
 }
+
+-(void) undoLastAction {
+    
+    [self.managedObjectContext undo];
+    
+    [self getCompaniesFromCoreData];
+    
+}
+
+-(void) saveAllToCoreData {
+    
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Unable to save managed object context.");
+        NSLog(@"%@, %@", error, error.localizedDescription);
+    }
+    else
+        NSLog(@"All changes have been saved to Core Data!");
+
+}
+
+#pragma mark - Application's Documents directory
+
+// Returns the URL to the application's Documents directory.
+- (NSURL *)applicationDocumentsDirectory
+{
+    return [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+#pragma mark - Dealloc
 
 - (void)dealloc {
     // Should never be called, but just here for clarity really.

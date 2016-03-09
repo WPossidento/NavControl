@@ -11,20 +11,12 @@
 
 @interface CompanyViewController ()
 
+@property (nonatomic) NSManagedObjectContext *context;
+@property (nonatomic) NSManagedObjectModel *model;
+
 @end
 
 @implementation CompanyViewController
-
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -34,12 +26,16 @@
      self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
+    UIBarButtonItem *undoButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemUndo target:self action:@selector(undoButtonClicked)];
     
-    self.sharedManager = [MyManager sharedManager];
+    self.navigationItem.rightBarButtonItems = @[self.editButtonItem, undoButton];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
 
     self.title = @"Mobile device makers";
+    
+    self.sharedManager = [MyManager sharedManager];
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -82,9 +78,11 @@
     
     // Configure the cell...
     
-    cell.textLabel.text = [[ self.sharedManager.companyList objectAtIndex:[indexPath row]  ] companyName];
-    cell.imageView.image = [[self.sharedManager.companyList objectAtIndex:[indexPath row]] companyLogo];
-
+    cell.textLabel.text = [[ self.sharedManager.companyList objectAtIndex:[indexPath row]] name];
+    //cell.imageView.image = [UIImage imageNamed:[[self.sharedManager.companyList objectAtIndex:[indexPath row]] logo]];
+    cell.imageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.png",self.sharedManager.imagesPath, [self.sharedManager.companyList objectAtIndex:indexPath.row].name]];
+    
+//    NSLog(@"imagespath:%@",[NSString stringWithFormat:@"%@/%@.png",self.sharedManager.imagesPath, [[self.sharedManager.companyList objectAtIndex:[indexPath row]] name]]);
     return cell;
 }
 
@@ -105,8 +103,11 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [self.sharedManager deleteCompany:indexPath.row];
-        [self.sharedManager updatePositionForCompany];
+        //[self.sharedManager deleteCompany:indexPath.row];
+        //[self.sharedManager updatePositionForCompany];
+        
+        [self.sharedManager deleteCompanyFromCoreData:indexPath.row];
+        [self.sharedManager.companyList removeObjectAtIndex:indexPath.row];
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -122,11 +123,12 @@
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-//    [self.sharedManager.companyList exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+    [self.sharedManager updatePositionInCoreDataForCompaniesFrom: (NSUInteger)fromIndexPath.row To:(NSUInteger)toIndexPath.row];
+    
     Company *comp = [self.sharedManager.companyList objectAtIndex:fromIndexPath.row];
     [self.sharedManager.companyList removeObject:comp];
     [self.sharedManager.companyList insertObject:comp atIndex:toIndexPath.row];
-    [self.sharedManager updatePositionForCompany];
+
     [self.tableView reloadData];
 }
 
@@ -139,14 +141,12 @@
     return YES;
 }
 
-
-
 #pragma mark - Table view delegate
 
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.productViewController.title = [[self.sharedManager.companyList objectAtIndex:[indexPath row]] companyName];
+    self.productViewController.title = [[self.sharedManager.companyList objectAtIndex:[indexPath row]] name];
     
     self.sharedManager.currentCompanyNumber = [indexPath row];
     
@@ -185,13 +185,19 @@
 -(void) editCompany {
     AddCompanyViewController *addCompanyViewController = [[AddCompanyViewController alloc] initWithNibName:@"AddCompanyViewController" bundle:nil];
     
-    addCompanyViewController.title = [NSString stringWithFormat: @"Edit %@", [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyName]];
+    addCompanyViewController.title = [NSString stringWithFormat: @"Edit %@", [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] name]];
     
         [self.navigationController
      pushViewController:addCompanyViewController animated:YES];
     
     [addCompanyViewController release];
     
+}
+
+-(void) undoButtonClicked {
+    
+    [self.sharedManager undoLastAction];
+    [self.tableView reloadData];
 }
 
 

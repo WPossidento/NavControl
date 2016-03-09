@@ -7,14 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Product.h"
+#import <CoreData/CoreData.h>
+
+@class Product;
 
 @interface Company : NSObject
 
-@property (nonatomic, retain) NSString *companyName;
-@property (nonatomic, retain) UIImage *companyLogo;
+@property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString *logo;
+@property (nonatomic, retain) NSNumber *pos;
+
 @property (nonatomic, retain) NSMutableArray <Product *> *productsList;
 
--(instancetype)initWithName: (NSString *) name andLogo: (UIImage *) logo andProducts: (NSMutableArray <Product *>*) products;
+-(instancetype)initWithName: (NSString *) name andLogo: (NSString *) logo andProducts: (NSMutableArray <Product *>*) products;
 
 @end

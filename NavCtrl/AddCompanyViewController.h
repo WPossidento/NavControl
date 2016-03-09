@@ -11,7 +11,7 @@
 
 @class MyManager;
 
-@interface AddCompanyViewController : UIViewController 
+@interface AddCompanyViewController : UIViewController
 
 @property (retain, nonatomic) IBOutlet UIButton *AddProductsButton;
 @property (nonatomic) NSUInteger productsViewCounter;

@@ -9,10 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "Company.h"
 #import "Product.h"
-#import "sqlite3.h"
-//#import "AddCompanyViewController.h"
-
-//@class AddCompanyViewController;
+#import "Company_MO.h"
+#import "Product_MO.h"
 
 @interface MyManager : NSObject
 
@@ -21,18 +19,22 @@
 @property (nonatomic) NSInteger currentProductNumber;
 
 @property (nonatomic) BOOL isCompanyInEditMode;
-@property (nonatomic, retain) NSString *dbPathString;
-@property (nonatomic, retain) NSString *imagesPath;
 
+@property (nonatomic, retain) NSString *imagesPath;
 
 + (id)sharedManager;
 
--(void)createDataBase;
--(void) saveNewCompanyToDB;
--(void) deleteCompany:(NSInteger) position;
--(void) deleteProduct:(NSInteger) position;
--(void) updatePositionForCompany;
--(void) updatePositionForProducts;
--(void) saveEditedProduct;
+//- (void)saveContext;
+- (NSURL *)applicationDocumentsDirectory;
+
+- (void) createDataAtFirstLaunch;
+-(void) getCompaniesFromCoreData;
+-(void) saveNewCompanyToCoreData;
+
+-(void) updatePositionInCoreDataForCompaniesFrom: (NSUInteger) fromIndex To: (NSUInteger) toIndex;
+-(void) updatePositionInCoreDataForProductsFrom: (NSUInteger) fromIndex To: (NSUInteger) toIndex;
+
+-(void) deleteCompanyFromCoreData: (NSUInteger) companyIndex;
+-(void) undoLastAction;
 
 @end

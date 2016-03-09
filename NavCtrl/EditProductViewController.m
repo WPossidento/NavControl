@@ -46,21 +46,25 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveProduct)];
     
-    self.productNameTextField.text = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] productName];
+    self.productNameTextField.text = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] name];
     
-    self.productLogoImageView.image = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] productLogo];
+    self.productLogoImageView.image = [UIImage imageNamed:[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] logo]];
     
-    self.productURLTextField.text = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] productURL];
+    self.productURLTextField.text = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.sharedManager.currentProductNumber] url];
     
 }
 
 -(void) saveProduct {
     
-    Product *product = [[Product alloc] initWithName:self.productNameTextField.text andLogo:self.productLogoImageView.image andURL:self.productURLTextField.text];
+    NSData *imgAsData = UIImagePNGRepresentation(self.productLogoImageView.image);
+    NSString *imageFile = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"images/%@.png",self.productNameTextField.text]];
+    [imgAsData writeToFile:imageFile atomically:YES];
+    
+    Product *product = [[Product alloc] initWithName:self.productNameTextField.text andLogo: self.productNameTextField.text andURL:self.productURLTextField.text];
     
     [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] replaceObjectAtIndex:self.sharedManager.currentProductNumber withObject:product];
     
-    [self.sharedManager saveEditedProduct];
+    //[self.sharedManager saveEditedProduct];
     [self.navigationController popViewControllerAnimated:YES];
 
     [product release];

@@ -10,6 +10,7 @@
 #import "ProductViewController.h"
 #import "MyManager.h"
 #import "AddCompanyViewController.h"
+#import <CoreData/CoreData.h>
 
 //@class ProductViewController;
 

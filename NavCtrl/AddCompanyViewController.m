@@ -55,8 +55,8 @@
     if (self.sharedManager.isCompanyInEditMode == YES) {
         self.fillView = YES;
         
-        self.companyNameTextField.text =  [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyName];   //[self.company companyName];
-        self.companyLogo.image = [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] companyLogo];
+        self.companyNameTextField.text =  [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] name];   //[self.company companyName];
+        self.companyLogo.image = [UIImage imageNamed:[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] logo]];
     
         for (int i = 0; i < [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] count]; i++) {
         
@@ -117,7 +117,7 @@
     productNameTextView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     
     if (self.fillView == YES) {
-        productNameTextView.text = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.productsViewCounter] productName];
+        productNameTextView.text = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.productsViewCounter] name];
     }
     
     [productsView addSubview:productName];
@@ -136,7 +136,7 @@
     productLogoImageView.tag = self.productsViewCounter;
     
     if (self.fillView == YES) {
-        productLogoImageView.image = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.productsViewCounter] productLogo];
+        productLogoImageView.image = [UIImage imageNamed:[[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.productsViewCounter] logo]];
     }
     else {
         productLogoImageView.image = [UIImage imageNamed:@"noimg.png"];
@@ -180,7 +180,7 @@
     productURLTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
     if (self.fillView == YES) {
-        productURLTextView.text = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.productsViewCounter] productURL];
+        productURLTextView.text = [[[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:self.productsViewCounter] url];
     }
     
     [productsView addSubview:productURL];
@@ -194,7 +194,7 @@
     
     self.productsViewCounter++;
     
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.bounds.size.width, 20+self.productsViewCounter*(self.productsView.bounds.size.height+5));
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.bounds.size.width, 20+self.productsViewCounter*(productsView.bounds.size.height+5));
     
 }
 
@@ -266,25 +266,25 @@
                 switch (counter) {
                     case 0: {
                         
-                        newProduct.productName = [(UITextView *)tmp text];
+                        newProduct.name = [(UITextView *)tmp text];
                         
-                        if ([newProduct.productName isEqualToString:@""]) {
-                            newProduct.productName = @"Unnamed Product";
+                        if ([newProduct.name isEqualToString:@""]) {
+                            newProduct.name = @"Unnamed Product";
                         }
                         
-                        NSLog(@"productName: %@",newProduct.productName);
+                        NSLog(@"productName: %@",newProduct.name);
                         
                     }
                         break;
                         
                     case 1: {
-                        newProduct.productURL = [(UITextView *)tmp text];
+                        newProduct.url = [(UITextView *)tmp text];
                         
-                        if ([newProduct.productURL isEqualToString:@""]) {
-                            newProduct.productURL = @"https://google.com";
+                        if ([newProduct.url isEqualToString:@""]) {
+                            newProduct.url = @"https://google.com";
                         }
                         
-                        NSLog(@"productURL: %@",newProduct.productURL);
+                        NSLog(@"productURL: %@",newProduct.url);
                         counter = 0;
                     }
                     default:
@@ -296,7 +296,10 @@
             }
             
             if ([tmp isKindOfClass:[UIImageView class]]) {
-                newProduct.productLogo = [(UIImageView *) tmp image];
+                newProduct.logo = newProduct.name;
+                NSData *imgAsData = UIImagePNGRepresentation([(UIImageView *) tmp image]);
+                NSString *imageFile = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"images/%@.png",newProduct.name]];
+                [imgAsData writeToFile:imageFile atomically:YES];
             }
             
         }
@@ -311,12 +314,18 @@
         self.companyNameTextField.text = @"Unnamed Company";
     }
     
-    Company *newComp = [[Company alloc] initWithName:self.companyNameTextField.text andLogo: self.companyLogo.image andProducts:products];
+    Company *newComp = [[Company alloc] initWithName:self.companyNameTextField.text andLogo: self.companyNameTextField.text andProducts:products];
+    
+    //saving image to 'images' folder
+    NSData *imgAsData = UIImagePNGRepresentation(self.companyLogo.image);
+    NSString *imageFile = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"images/%@.png",newComp.name]];
+    [imgAsData writeToFile:imageFile atomically:YES];
     
     
     if (self.sharedManager.currentCompanyNumber < 0) { // creating new company
         [self.sharedManager.companyList addObject:newComp];
-        [self.sharedManager saveNewCompanyToDB];
+        //[self.sharedManager saveNewCompanyToDB];
+        [self.sharedManager saveNewCompanyToCoreData];
         
     }
     else { // editing existing company
