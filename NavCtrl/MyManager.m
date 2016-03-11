@@ -116,29 +116,29 @@ static MyManager *sharedMyManager = nil;
 
 - (void) createDataAtFirstLaunch {
     
-    Product *iphone = [[Product alloc] initWithName:@"iPhone" andLogo:@"iphone.png" andURL:@"https://apple.com/iphone"];
-    Product *ipod = [[Product alloc] initWithName:@"iPod" andLogo:@"ipod.png" andURL:@"https://apple.com/ipod"];
-    Product *ipad = [[Product alloc] initWithName:@"iPad" andLogo:@"ipad.png" andURL:@"https://apple.com/ipad"];
+    Product *iphone = [[Product alloc] initWithName:@"iPhone" andLogo:@"iphone.png" andURL:@"https://apple.com/iphone" andPos:1024];
+    Product *ipod = [[Product alloc] initWithName:@"iPod" andLogo:@"ipod.png" andURL:@"https://apple.com/ipod" andPos:2048];
+    Product *ipad = [[Product alloc] initWithName:@"iPad" andLogo:@"ipad.png" andURL:@"https://apple.com/ipad" andPos:3072];
     
-    Company *apple = [[Company alloc] initWithName:@"Apple mobile devices" andLogo:@"apple_s.png" andProducts:[NSMutableArray arrayWithObjects: iphone, ipod, ipad, nil]];
+    Company *apple = [[Company alloc] initWithName:@"Apple mobile devices" andLogo:@"apple_s.png" andPos:1024 andProducts:[NSMutableArray arrayWithObjects: iphone, ipod, ipad, nil]];
     
-    Product *galaxyS4 = [[Product alloc] initWithName:@"Galaxy S4" andLogo:@"s4.png" andURL:@"http://www.samsung.com/global/microsite/galaxys4/"];
-    Product *galaxyNote = [[Product alloc] initWithName:@"Galaxy Note" andLogo:@"note.png" andURL:@"http://www.samsung.com/global/microsite/galaxynote/"];
-    Product *galaxyTab = [[Product alloc] initWithName:@"Galaxy Tab" andLogo:@"tab.png" andURL:@"http://www.samsung.com/global/microsite/galaxytab/"];
+    Product *galaxyS4 = [[Product alloc] initWithName:@"Galaxy S4" andLogo:@"s4.png" andURL:@"http://www.samsung.com/global/microsite/galaxys4/" andPos:1024];
+    Product *galaxyNote = [[Product alloc] initWithName:@"Galaxy Note" andLogo:@"note.png" andURL:@"http://www.samsung.com/global/microsite/galaxynote/" andPos:2048];
+    Product *galaxyTab = [[Product alloc] initWithName:@"Galaxy Tab" andLogo:@"tab.png" andURL:@"http://www.samsung.com/global/microsite/galaxytab/" andPos:3072];
     
-    Company *samsung = [[Company alloc] initWithName:@"Samsung mobile devices" andLogo:@"samsung_s.png" andProducts:[NSMutableArray arrayWithObjects: galaxyS4, galaxyNote, galaxyTab, nil]];
+    Company *samsung = [[Company alloc] initWithName:@"Samsung mobile devices" andLogo:@"samsung_s.png" andPos:2048 andProducts:[NSMutableArray arrayWithObjects: galaxyS4, galaxyNote, galaxyTab, nil]];
     
-    Product *lumia950XL = [[Product alloc] initWithName:@"Lumia 950XL" andLogo:@"lumia950xl.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia950-xl-dual-sim/"];
-    Product *lumia550 = [[Product alloc] initWithName:@"Lumia 550" andLogo:@"lumia550.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia550/"];
-    Product *lumia1520 = [[Product alloc] initWithName:@"Lumia 1520" andLogo:@"lumia1520.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia1520/"];
+    Product *lumia950XL = [[Product alloc] initWithName:@"Lumia 950XL" andLogo:@"lumia950xl.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia950-xl-dual-sim/" andPos:1024];
+    Product *lumia550 = [[Product alloc] initWithName:@"Lumia 550" andLogo:@"lumia550.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia550/" andPos:2048];
+    Product *lumia1520 = [[Product alloc] initWithName:@"Lumia 1520" andLogo:@"lumia1520.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia1520/" andPos:3072];
     
-    Company *microsoft = [[Company alloc] initWithName:@"Microsoft mobile devices" andLogo:@"microsoft.png" andProducts:[NSMutableArray arrayWithObjects:lumia950XL, lumia550, lumia1520, nil]];
+    Company *microsoft = [[Company alloc] initWithName:@"Microsoft mobile devices" andLogo:@"microsoft.png" andPos:3072 andProducts:[NSMutableArray arrayWithObjects:lumia950XL, lumia550, lumia1520, nil]];
     
-    Product *signature = [[Product alloc] initWithName:@"Signature" andLogo:@"signature.png" andURL:@"http://www.vertu.com/us/en/collections/signature/"];
-    Product *stouch = [[Product alloc] initWithName:@"The New Signature Touch" andLogo:@"stouch.jpeg" andURL:@"http://www.vertu.com/us/en/collections/signature-touch/"];
-    Product *aster = [[Product alloc] initWithName:@"Aster" andLogo:@"aster.png" andURL:@"http://www.vertu.com/us/en/collections/aster/"];
+    Product *signature = [[Product alloc] initWithName:@"Signature" andLogo:@"signature.png" andURL:@"http://www.vertu.com/us/en/collections/signature/" andPos:1024];
+    Product *stouch = [[Product alloc] initWithName:@"The New Signature Touch" andLogo:@"stouch.jpeg" andURL:@"http://www.vertu.com/us/en/collections/signature-touch/" andPos:2048];
+    Product *aster = [[Product alloc] initWithName:@"Aster" andLogo:@"aster.png" andURL:@"http://www.vertu.com/us/en/collections/aster/" andPos:3072];
     
-    Company *vertu = [[Company alloc] initWithName:@"Vertu mobile devices" andLogo:@"vertu_s.png" andProducts:[NSMutableArray arrayWithObjects: signature, stouch, aster, nil]];
+    Company *vertu = [[Company alloc] initWithName:@"Vertu mobile devices" andLogo:@"vertu_s.png" andPos:4096 andProducts:[NSMutableArray arrayWithObjects: signature, stouch, aster, nil]];
     
     self.companyList = [[NSMutableArray alloc] initWithObjects:apple, samsung, microsoft, vertu, nil];
     
@@ -231,17 +231,13 @@ static MyManager *sharedMyManager = nil;
 
 -(void) fillCoreDataDB {
     
-    int i = 1024;
-    int j = 1024;
-    
     for (Company *newCompany in self.companyList) {
         
         Company_MO *newCompanyMO = [[Company_MO alloc] initWithEntity:companyEntityDescription insertIntoManagedObjectContext: self.managedObjectContext];
         
         [newCompanyMO setValue: newCompany.name forKey:@"name"];
         [newCompanyMO setValue: newCompany.logo forKey:@"logo"];
-        [newCompanyMO setValue:@(i) forKey:@"pos"];
-        i+=1024;
+        [newCompanyMO setValue:@(newCompany.pos) forKey:@"pos"];
         
         //copy company image to 'images' folder
         
@@ -262,8 +258,7 @@ static MyManager *sharedMyManager = nil;
             [newProductMO setValue:newProduct.name forKey:@"name"];
             [newProductMO setValue:newProduct.logo forKey:@"logo"];
             [newProductMO setValue:newProduct.url forKey:@"url"];
-            [newProductMO setValue:@(j) forKey:@"pos"];
-            j+=1024;
+            [newProductMO setValue:@(newProduct.pos) forKey:@"pos"];
             
             [newCompanyMO addProductsListObject:newProductMO];
             //            [newProductMO setCompany:newCompanyMO]; another way
@@ -280,9 +275,6 @@ static MyManager *sharedMyManager = nil;
             }
             
         }
-        
-        j = 1024;
-        
         
         [self saveAllToCoreData];
         
@@ -316,16 +308,14 @@ static MyManager *sharedMyManager = nil;
             NSMutableArray *productsList = [[NSMutableArray alloc] init];
             
             for (Product_MO *productMO in productsListMO) {
-                Product *newProduct = [[Product alloc] initWithName:productMO.name andLogo:productMO.logo andURL:productMO.url];
+                Product *newProduct = [[Product alloc] initWithName:productMO.name andLogo:productMO.logo andURL:productMO.url andPos:[productMO.pos integerValue]];
                 [productsList addObject:newProduct];
                 [newProduct release];
             }
             
-            Company *newCompany = [[Company alloc] initWithName:managedObject.name andLogo:managedObject.logo andProducts: productsList];
+            Company *newCompany = [[Company alloc] initWithName:managedObject.name andLogo:managedObject.logo andPos:[managedObject.pos integerValue] andProducts: productsList];
             
             [productsList release];
-            
-            newCompany.pos = managedObject.pos;
             
             [self.companyList addObject:newCompany];
         }
@@ -427,12 +417,16 @@ static MyManager *sharedMyManager = nil;
     
     [self saveAllToCoreData];
 
-    
-    
+    [fetchRequest release];
     
 }
 
 -(void) updatePositionInCoreDataForProductsFrom: (NSUInteger) fromIndex To: (NSUInteger) toIndex { // did not finish
+    
+    for (Product *prod in [self.companyList objectAtIndex:self.currentCompanyNumber].productsList) {
+        NSLog(@"MyManager!\n name: %@, pos: %lu", prod.name, prod.pos);
+    }
+    
     
     NSNumber *newPosition = @(0);
     // Fetching
@@ -454,7 +448,6 @@ static MyManager *sharedMyManager = nil;
         else
             
         {
-            
             predicate = [NSPredicate predicateWithFormat:@"%K == %@ || %K == %@", @"name", [[self.companyList objectAtIndex:self.currentCompanyNumber].productsList objectAtIndex:toIndex+1].name, @"name", [[self.companyList objectAtIndex:self.currentCompanyNumber].productsList objectAtIndex:toIndex].name];
         }
     
@@ -500,6 +493,7 @@ static MyManager *sharedMyManager = nil;
     
     [self saveAllToCoreData];
     
+    [fetchRequest release];
     
     
     
@@ -528,6 +522,7 @@ static MyManager *sharedMyManager = nil;
         NSLog(@"%@, %@", fetchError, fetchError.localizedDescription);
     }
 
+    [fetchRequest release];
 
 }
 

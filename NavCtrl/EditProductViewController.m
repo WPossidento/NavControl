@@ -60,7 +60,9 @@
     NSString *imageFile = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"images/%@.png",self.productNameTextField.text]];
     [imgAsData writeToFile:imageFile atomically:YES];
     
-    Product *product = [[Product alloc] initWithName:self.productNameTextField.text andLogo: self.productNameTextField.text andURL:self.productURLTextField.text];
+    NSUInteger prevPos = [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber].productsList objectAtIndex:self.sharedManager.currentProductNumber].pos;
+    
+    Product *product = [[Product alloc] initWithName:self.productNameTextField.text andLogo: self.productNameTextField.text andURL:self.productURLTextField.text andPos:prevPos];
     
     [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] replaceObjectAtIndex:self.sharedManager.currentProductNumber withObject:product];
     

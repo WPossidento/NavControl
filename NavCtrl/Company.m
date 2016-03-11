@@ -10,11 +10,12 @@
 
 @implementation Company
 
--(instancetype)initWithName: (NSString *) name andLogo: (NSString *) logo andProducts: (NSMutableArray <Product *>*) products {
+-(instancetype)initWithName: (NSString *) name andLogo: (NSString *) logo andPos: (NSUInteger) pos andProducts: (NSMutableArray <Product *>*) products {
     self = [super init];
     if (self) {
         self.name = name;
         self.logo = logo;
+        self.pos = pos;
         self.productsList  = products;
     }
     

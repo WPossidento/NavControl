@@ -132,8 +132,25 @@
     [self.sharedManager updatePositionInCoreDataForProductsFrom:fromIndexPath.row To:toIndexPath.row];
     
     Product *prod = [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:fromIndexPath.row];
+    
+    if (toIndexPath.row == 0) {
+        prod.pos = [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList].firstObject.pos/2;
+    } else
+        if (toIndexPath.row == [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList].count-1) {
+            prod.pos = [[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList].lastObject.pos + 1024;
+        } else {
+            // to do
+            prod.pos = ([[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:toIndexPath.row].pos + [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] objectAtIndex:toIndexPath.row + 1].pos)/2;
+        }
+    
     [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] removeObject:prod];
     [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber] productsList] insertObject:prod atIndex:toIndexPath.row];
+    
+    
+    
+    for (Product *prod in [self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber].productsList) {
+        NSLog(@"ProductViewController!\n name: %@, pos: %lu", prod.name, prod.pos);
+    }
     
 }
 

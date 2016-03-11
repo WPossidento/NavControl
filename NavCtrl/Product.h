@@ -14,11 +14,11 @@
 @property (retain) NSString *name;
 @property (nonatomic, retain) NSString *logo;
 @property (nonatomic, retain) NSString *url;
-@property (nonatomic, retain) NSNumber *pos;
+@property (nonatomic) NSUInteger pos;
 
 
 
--(instancetype)initWithName: (NSString *) name andLogo: (NSString *) logo andURL: (NSString*) url;
+-(instancetype)initWithName: (NSString *) name andLogo: (NSString *) logo andURL: (NSString*) url andPos: (NSUInteger) pos;
 
 
 @end

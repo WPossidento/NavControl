@@ -10,13 +10,14 @@
 
 @implementation Product
 
--(instancetype)initWithName: (NSString *) name andLogo: (NSString *) logo andURL: (NSString*) url
+-(instancetype)initWithName: (NSString *) name andLogo: (NSString *) logo andURL: (NSString*) url andPos: (NSUInteger) pos
 {
     self = [super init];
     if (self) {
         self.name = name;
         self.logo = logo;
         self.url  = url;
+        self.pos = pos;
     }
     
     return self;
