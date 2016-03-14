@@ -35,6 +35,8 @@
 -(void) updatePositionInCoreDataForProductsFrom: (NSUInteger) fromIndex To: (NSUInteger) toIndex;
 
 -(void) deleteCompanyFromCoreData: (NSUInteger) companyIndex;
+-(void) deleteProductFromCoreData: (NSUInteger) productIndex;
+
 -(void) undoLastAction;
 
 @end

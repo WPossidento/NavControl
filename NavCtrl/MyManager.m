@@ -324,6 +324,7 @@ static MyManager *sharedMyManager = nil;
         NSLog(@"Error fetching data.");
         NSLog(@"%@, %@", fetchError, fetchError.localizedDescription);
     }
+    //
 }
 
 -(void) saveNewCompanyToCoreData {
@@ -331,7 +332,7 @@ static MyManager *sharedMyManager = nil;
     
     [newCompanyMO setValue:self.companyList.lastObject.name forKey:@"name"];
     [newCompanyMO setValue:self.companyList.lastObject.name forKey:@"logo"];
-    [newCompanyMO setValue:@(self.companyList.count-1) forKey:@"pos"];
+    [newCompanyMO setValue:@(self.companyList.lastObject.pos+1024) forKey:@"pos"];
     
     int j = 1024;
     
@@ -524,6 +525,31 @@ static MyManager *sharedMyManager = nil;
 
     [fetchRequest release];
 
+}
+-(void) deleteProductFromCoreData: (NSUInteger) productIndex {
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Product"];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", [[self.companyList objectAtIndex:self.currentCompanyNumber].productsList objectAtIndex:productIndex].name];
+    [fetchRequest setPredicate:predicate];
+    // Execute Fetch Request
+    NSError *fetchError = nil;
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&fetchError];
+    
+    if (!fetchError) {
+        for (Product_MO *managedObject in result) {
+            NSLog(@"product %@ deleted from Core Data", managedObject.name);
+            [self.managedObjectContext deleteObject:managedObject];
+            [self saveAllToCoreData];
+        }
+        
+    } else {
+        NSLog(@"Error fetching data.");
+        NSLog(@"%@, %@", fetchError, fetchError.localizedDescription);
+    }
+    
+    [fetchRequest release];
+    
 }
 
 -(void) undoLastAction {

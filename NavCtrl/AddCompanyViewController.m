@@ -314,7 +314,9 @@
         self.companyNameTextField.text = @"Unnamed Company";
     }
     
-    Company *newComp = [[Company alloc] initWithName:self.companyNameTextField.text andLogo: self.companyNameTextField.text andProducts:products];
+    NSUInteger lastCompPos = self.sharedManager.companyList.lastObject.pos;
+    
+    Company *newComp = [[Company alloc] initWithName:self.companyNameTextField.text andLogo: self.companyNameTextField.text andPos: lastCompPos+1024 andProducts:products];
     
     //saving image to 'images' folder
     NSData *imgAsData = UIImagePNGRepresentation(self.companyLogo.image);
@@ -332,11 +334,12 @@
         [self.sharedManager.companyList replaceObjectAtIndex:self.sharedManager.currentCompanyNumber withObject:newComp];
     }
     
-    [products release];
-    [newComp release];
+    
 
     [self.navigationController popToRootViewControllerAnimated:YES];
 
+    [products release];
+    [newComp release];
     
     
 }

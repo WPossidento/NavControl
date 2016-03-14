@@ -112,7 +112,6 @@
         
         
         [[[self.sharedManager.companyList objectAtIndex:self.sharedManager.currentCompanyNumber ] productsList] removeObjectAtIndex:indexPath.row];
-        //[self.sharedManager deleteProduct:indexPath.row];
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             

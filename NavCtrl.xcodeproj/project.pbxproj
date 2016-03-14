@@ -24,6 +24,14 @@
 		48A656EB18163F8700746D36 /* ProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A656E918163F8700746D36 /* ProductViewController.m */; };
 		48A656EE1816468000746D36 /* Sunflower.gif in Resources */ = {isa = PBXBuildFile; fileRef = 48A656ED1816468000746D36 /* Sunflower.gif */; };
 		B316CE011C7D1FB700E6EE61 /* noimg.png in Resources */ = {isa = PBXBuildFile; fileRef = B316CE001C7D1FB700E6EE61 /* noimg.png */; };
+		B325D8101C9374D0000E44E1 /* CompanyCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B325D80E1C9374D0000E44E1 /* CompanyCollectionViewController.m */; };
+		B325D8111C9374D0000E44E1 /* CompanyCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B325D80F1C9374D0000E44E1 /* CompanyCollectionViewController.xib */; };
+		B325D8161C93751F000E44E1 /* ProductCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B325D8141C93751F000E44E1 /* ProductCollectionViewController.m */; };
+		B325D8171C93751F000E44E1 /* ProductCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B325D8151C93751F000E44E1 /* ProductCollectionViewController.xib */; };
+		B325D8221C938D82000E44E1 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B325D8201C938D82000E44E1 /* CustomCell.m */; };
+		B325D8231C938D82000E44E1 /* CustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B325D8211C938D82000E44E1 /* CustomCell.xib */; };
+		B325D8251C9681CA000E44E1 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = B325D8241C9681CA000E44E1 /* delete.png */; };
+		B325D8271C9683B6000E44E1 /* delete2.png in Resources */ = {isa = PBXBuildFile; fileRef = B325D8261C9683B6000E44E1 /* delete2.png */; };
 		B38819441C7F8A3600D9400A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B38819431C7F8A3600D9400A /* CoreData.framework */; };
 		B38819471C7F8DF200D9400A /* Core_Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B38819451C7F8DF200D9400A /* Core_Data.xcdatamodeld */; };
 		B388199F1C8AF05D00D9400A /* Company_MO.m in Sources */ = {isa = PBXBuildFile; fileRef = B38819991C8AF05D00D9400A /* Company_MO.m */; };
@@ -93,6 +101,17 @@
 		48A656ED1816468000746D36 /* Sunflower.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Sunflower.gif; sourceTree = "<group>"; };
 		B316CDFC1C77B0CF00E6EE61 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		B316CE001C7D1FB700E6EE61 /* noimg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noimg.png; sourceTree = "<group>"; };
+		B325D80D1C9374D0000E44E1 /* CompanyCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CompanyCollectionViewController.h; path = NavCtrl/CompanyCollectionViewController.h; sourceTree = "<group>"; };
+		B325D80E1C9374D0000E44E1 /* CompanyCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CompanyCollectionViewController.m; path = NavCtrl/CompanyCollectionViewController.m; sourceTree = "<group>"; };
+		B325D80F1C9374D0000E44E1 /* CompanyCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CompanyCollectionViewController.xib; path = NavCtrl/CompanyCollectionViewController.xib; sourceTree = "<group>"; };
+		B325D8131C93751F000E44E1 /* ProductCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductCollectionViewController.h; sourceTree = "<group>"; };
+		B325D8141C93751F000E44E1 /* ProductCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCollectionViewController.m; sourceTree = "<group>"; };
+		B325D8151C93751F000E44E1 /* ProductCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductCollectionViewController.xib; sourceTree = "<group>"; };
+		B325D81F1C938D82000E44E1 /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
+		B325D8201C938D82000E44E1 /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCell.m; sourceTree = "<group>"; };
+		B325D8211C938D82000E44E1 /* CustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCell.xib; sourceTree = "<group>"; };
+		B325D8241C9681CA000E44E1 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+		B325D8261C9683B6000E44E1 /* delete2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete2.png; sourceTree = "<group>"; };
 		B38819431C7F8A3600D9400A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		B38819461C7F8DF200D9400A /* Core_Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Core_Data.xcdatamodel; sourceTree = "<group>"; };
 		B38819981C8AF05D00D9400A /* Company_MO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Company_MO.h; sourceTree = "<group>"; };
@@ -195,6 +214,9 @@
 		48A656A818163BF200746D36 = {
 			isa = PBXGroup;
 			children = (
+				B325D8181C937523000E44E1 /* ProductViewController */,
+				B325D8121C9374DA000E44E1 /* CompanyCollectionView */,
+				B325D81E1C937551000E44E1 /* CollectionViewCell */,
 				B38819481C7F8E0400D9400A /* CoreData */,
 				48A656BA18163BF200746D36 /* NavCtrl */,
 				48A656D318163BF200746D36 /* NavCtrlTests */,
@@ -250,6 +272,8 @@
 			isa = PBXGroup;
 			children = (
 				B316CE001C7D1FB700E6EE61 /* noimg.png */,
+				B325D8241C9681CA000E44E1 /* delete.png */,
+				B325D8261C9683B6000E44E1 /* delete2.png */,
 				B39826FA1C6157F400871814 /* samsung */,
 				B39826FB1C61582500871814 /* apple */,
 				B39827021C6158C100871814 /* microsoft */,
@@ -279,6 +303,36 @@
 				48A656D618163BF200746D36 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B325D8121C9374DA000E44E1 /* CompanyCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				B325D80D1C9374D0000E44E1 /* CompanyCollectionViewController.h */,
+				B325D80E1C9374D0000E44E1 /* CompanyCollectionViewController.m */,
+				B325D80F1C9374D0000E44E1 /* CompanyCollectionViewController.xib */,
+			);
+			name = CompanyCollectionView;
+			sourceTree = "<group>";
+		};
+		B325D8181C937523000E44E1 /* ProductViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B325D8131C93751F000E44E1 /* ProductCollectionViewController.h */,
+				B325D8141C93751F000E44E1 /* ProductCollectionViewController.m */,
+				B325D8151C93751F000E44E1 /* ProductCollectionViewController.xib */,
+			);
+			name = ProductViewController;
+			sourceTree = "<group>";
+		};
+		B325D81E1C937551000E44E1 /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				B325D81F1C938D82000E44E1 /* CustomCell.h */,
+				B325D8201C938D82000E44E1 /* CustomCell.m */,
+				B325D8211C938D82000E44E1 /* CustomCell.xib */,
+			);
+			name = CollectionViewCell;
 			sourceTree = "<group>";
 		};
 		B38819481C7F8E0400D9400A /* CoreData */ = {
@@ -474,9 +528,11 @@
 				B39827121C61629400871814 /* WebViewController.xib in Resources */,
 				48A656EE1816468000746D36 /* Sunflower.gif in Resources */,
 				48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */,
+				B325D8111C9374D0000E44E1 /* CompanyCollectionViewController.xib in Resources */,
 				B39826F11C61541B00871814 /* ipod.png in Resources */,
 				B39826E51C6147DE00871814 /* microsoft.png in Resources */,
 				B316CE011C7D1FB700E6EE61 /* noimg.png in Resources */,
+				B325D8271C9683B6000E44E1 /* delete2.png in Resources */,
 				B39826F31C61548D00871814 /* iphone.png in Resources */,
 				48A656BF18163BF200746D36 /* InfoPlist.strings in Resources */,
 				B39826F91C6156C500871814 /* tab.png in Resources */,
@@ -487,9 +543,12 @@
 				B39826EB1C614E8700871814 /* apple_s.png in Resources */,
 				B39827041C6159B800871814 /* signature.png in Resources */,
 				B39827011C6158BD00871814 /* lumia1520.png in Resources */,
+				B325D8171C93751F000E44E1 /* ProductCollectionViewController.xib in Resources */,
+				B325D8251C9681CA000E44E1 /* delete.png in Resources */,
 				B39827261C6412E300871814 /* AddCompanyViewController.xib in Resources */,
 				B39827071C615AFA00871814 /* aster.png in Resources */,
 				B39826F71C6156C500871814 /* note.png in Resources */,
+				B325D8231C938D82000E44E1 /* CustomCell.xib in Resources */,
 				B39826EC1C614E8700871814 /* samsung_s.png in Resources */,
 				B3E83A4A1C6BB14000E59512 /* EditProductViewController.xib in Resources */,
 			);
@@ -510,6 +569,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B325D8161C93751F000E44E1 /* ProductCollectionViewController.m in Sources */,
 				B39827251C6412E300871814 /* AddCompanyViewController.m in Sources */,
 				B398271C1C61F27D00871814 /* Product.m in Sources */,
 				B3E83A491C6BB14000E59512 /* EditProductViewController.m in Sources */,
@@ -517,9 +577,11 @@
 				B388199F1C8AF05D00D9400A /* Company_MO.m in Sources */,
 				B39827191C61F26B00871814 /* Company.m in Sources */,
 				B39827111C61629400871814 /* WebViewController.m in Sources */,
+				B325D8221C938D82000E44E1 /* CustomCell.m in Sources */,
 				B38819B81C8B009300D9400A /* Company_MO+CoreDataProperties.m in Sources */,
 				B38819B91C8B009300D9400A /* Product_MO+CoreDataProperties.m in Sources */,
 				B39827211C629CEF00871814 /* MyManager.m in Sources */,
+				B325D8101C9374D0000E44E1 /* CompanyCollectionViewController.m in Sources */,
 				48A656C518163BF200746D36 /* NavControllerAppDelegate.m in Sources */,
 				48A656C118163BF200746D36 /* main.m in Sources */,
 				B38819A11C8AF05D00D9400A /* Product_MO.m in Sources */,

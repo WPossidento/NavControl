@@ -159,9 +159,7 @@
         
     } else {
         
-        [self.navigationController
-         pushViewController:self.productViewController
-         animated:YES];
+        [self.navigationController pushViewController:self.productViewController animated:YES];
         
     }
 
