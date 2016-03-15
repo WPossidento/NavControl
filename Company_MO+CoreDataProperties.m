@@ -16,6 +16,7 @@
 @dynamic name;
 @dynamic logo;
 @dynamic pos;
+@dynamic stockSymbol;
 @dynamic productsList;
 
 @end

@@ -317,6 +317,7 @@
     NSUInteger lastCompPos = self.sharedManager.companyList.lastObject.pos;
     
     Company *newComp = [[Company alloc] initWithName:self.companyNameTextField.text andLogo: self.companyNameTextField.text andPos: lastCompPos+1024 andProducts:products];
+    newComp.stockSymbol = @"GOOG";
     
     //saving image to 'images' folder
     NSData *imgAsData = UIImagePNGRepresentation(self.companyLogo.image);

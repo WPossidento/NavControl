@@ -12,6 +12,6 @@
 #import "ProductCollectionViewController.h"
 #import "AddCompanyViewController.h"
 
-@interface CompanyCollectionViewController : UICollectionViewController
+@interface CompanyCollectionViewController : UICollectionViewController <MyManagerDelegate>
 
 @end

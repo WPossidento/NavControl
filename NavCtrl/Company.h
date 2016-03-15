@@ -16,6 +16,8 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *logo;
 @property (nonatomic) NSUInteger pos;
+@property (nonatomic, retain) NSString *stockSymbol;
+@property (nonatomic, retain) NSNumber *stockPrice;
 
 @property (nonatomic, retain) NSMutableArray <Product *> *productsList;
 

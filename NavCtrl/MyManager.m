@@ -10,6 +10,8 @@
 
 static MyManager *sharedMyManager = nil;
 
+
+
 @interface MyManager ()
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -121,12 +123,14 @@ static MyManager *sharedMyManager = nil;
     Product *ipad = [[Product alloc] initWithName:@"iPad" andLogo:@"ipad.png" andURL:@"https://apple.com/ipad" andPos:3072];
     
     Company *apple = [[Company alloc] initWithName:@"Apple mobile devices" andLogo:@"apple_s.png" andPos:1024 andProducts:[NSMutableArray arrayWithObjects: iphone, ipod, ipad, nil]];
+    apple.stockSymbol = @"AAPL";
     
     Product *galaxyS4 = [[Product alloc] initWithName:@"Galaxy S4" andLogo:@"s4.png" andURL:@"http://www.samsung.com/global/microsite/galaxys4/" andPos:1024];
     Product *galaxyNote = [[Product alloc] initWithName:@"Galaxy Note" andLogo:@"note.png" andURL:@"http://www.samsung.com/global/microsite/galaxynote/" andPos:2048];
     Product *galaxyTab = [[Product alloc] initWithName:@"Galaxy Tab" andLogo:@"tab.png" andURL:@"http://www.samsung.com/global/microsite/galaxytab/" andPos:3072];
     
     Company *samsung = [[Company alloc] initWithName:@"Samsung mobile devices" andLogo:@"samsung_s.png" andPos:2048 andProducts:[NSMutableArray arrayWithObjects: galaxyS4, galaxyNote, galaxyTab, nil]];
+    samsung.stockSymbol = @"SSU.DE";
     
     Product *lumia950XL = [[Product alloc] initWithName:@"Lumia 950XL" andLogo:@"lumia950xl.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia950-xl-dual-sim/" andPos:1024];
     Product *lumia550 = [[Product alloc] initWithName:@"Lumia 550" andLogo:@"lumia550.png" andURL:@"https://www.microsoft.com/en-us/mobile/phone/lumia550/" andPos:2048];
@@ -134,11 +138,15 @@ static MyManager *sharedMyManager = nil;
     
     Company *microsoft = [[Company alloc] initWithName:@"Microsoft mobile devices" andLogo:@"microsoft.png" andPos:3072 andProducts:[NSMutableArray arrayWithObjects:lumia950XL, lumia550, lumia1520, nil]];
     
+    microsoft.stockSymbol = @"MSFT";
+    
     Product *signature = [[Product alloc] initWithName:@"Signature" andLogo:@"signature.png" andURL:@"http://www.vertu.com/us/en/collections/signature/" andPos:1024];
     Product *stouch = [[Product alloc] initWithName:@"The New Signature Touch" andLogo:@"stouch.jpeg" andURL:@"http://www.vertu.com/us/en/collections/signature-touch/" andPos:2048];
     Product *aster = [[Product alloc] initWithName:@"Aster" andLogo:@"aster.png" andURL:@"http://www.vertu.com/us/en/collections/aster/" andPos:3072];
     
     Company *vertu = [[Company alloc] initWithName:@"Vertu mobile devices" andLogo:@"vertu_s.png" andPos:4096 andProducts:[NSMutableArray arrayWithObjects: signature, stouch, aster, nil]];
+    
+    vertu.stockSymbol = @"VTU.L";
     
     self.companyList = [[NSMutableArray alloc] initWithObjects:apple, samsung, microsoft, vertu, nil];
     
@@ -238,6 +246,7 @@ static MyManager *sharedMyManager = nil;
         [newCompanyMO setValue: newCompany.name forKey:@"name"];
         [newCompanyMO setValue: newCompany.logo forKey:@"logo"];
         [newCompanyMO setValue:@(newCompany.pos) forKey:@"pos"];
+        [newCompanyMO setValue:newCompany.stockSymbol forKey:@"stockSymbol"];
         
         //copy company image to 'images' folder
         
@@ -314,6 +323,7 @@ static MyManager *sharedMyManager = nil;
             }
             
             Company *newCompany = [[Company alloc] initWithName:managedObject.name andLogo:managedObject.logo andPos:[managedObject.pos integerValue] andProducts: productsList];
+            newCompany.stockSymbol = managedObject.stockSymbol;
             
             [productsList release];
             
@@ -333,6 +343,7 @@ static MyManager *sharedMyManager = nil;
     [newCompanyMO setValue:self.companyList.lastObject.name forKey:@"name"];
     [newCompanyMO setValue:self.companyList.lastObject.name forKey:@"logo"];
     [newCompanyMO setValue:@(self.companyList.lastObject.pos+1024) forKey:@"pos"];
+    [newCompanyMO setValue:@"GOOG" forKey:@"stockSymbol"];
     
     int j = 1024;
     
@@ -570,6 +581,39 @@ static MyManager *sharedMyManager = nil;
         NSLog(@"All changes have been saved to Core Data!");
 
 }
+
+#pragma mark - Stocks
+
+-(void) loadStocksTo: (NSTimer *) theTimer {//(id<MyManagerDelegate>) delegate {
+    
+    //http://finance.yahoo.com/d/quotes.csv?s=
+    NSMutableString *requestURL = [NSMutableString stringWithString:@"http://finance.yahoo.com/webservice/v1/symbols/"];
+    
+    for (Company *tmp in self.companyList) {
+        [requestURL appendString:[NSString stringWithFormat:@"%@,", tmp.stockSymbol]];
+    }
+    
+    [requestURL appendString:@"/quote?format=json"];
+    
+    NSLog(@"!!!%@", requestURL);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    
+    [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        
+        for (int i = 0; i < self.companyList.count; i++) {
+            [self.companyList objectAtIndex:i].stockPrice = @([[[[responseObject valueForKeyPath:@"list.resources"] objectAtIndex:i] valueForKeyPath:@"resource.fields.price"] floatValue]);
+        }
+        
+        [[theTimer userInfo] stockUpdated];
+        
+    } failure:^(NSURLSessionTask *operation, NSError *failureErr) {
+        NSLog(@"Error: %@", failureErr);
+    }];
+    
+}
+
 
 #pragma mark - Application's Documents directory
 

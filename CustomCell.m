@@ -19,6 +19,7 @@
     [_imageView release];
     [_companyNameLabel release];
     [_deleteButton release];
+    [_stockPrice release];
     [super dealloc];
 }
 

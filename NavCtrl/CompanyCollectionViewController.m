@@ -14,6 +14,8 @@
 @interface CompanyCollectionViewController ()
 
 @property (nonatomic, retain) MyManager *sharedManager;
+@property (nonatomic, retain) NSTimer *timer;
+
 @end
 
 @implementation CompanyCollectionViewController
@@ -41,6 +43,13 @@ static NSString * const reuseIdentifier = @"Cell";
     self.installsStandardGestureForInteractiveMovement = YES;
     
     self.title = @"Mobile Device Makers";
+    
+    id<MyManagerDelegate> d = self;
+    
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self.sharedManager selector:@selector(loadStocksTo:) userInfo:d repeats:YES];
+    
+    [self.timer fire];
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated  {
@@ -83,6 +92,7 @@ static NSString * const reuseIdentifier = @"Cell";
     cell.imageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.png",self.sharedManager.imagesPath, [self.sharedManager.companyList objectAtIndex:indexPath.row].name]];
     
     cell.companyNameLabel.text = [self.sharedManager.companyList objectAtIndex:indexPath.row].name;
+    cell.stockPrice.text = [[self.sharedManager.companyList objectAtIndex:indexPath.row].stockPrice stringValue];
     
     if (self.editing) {
         
@@ -193,6 +203,15 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
     [self.collectionView reloadData];
+}
+
+-(void)stockUpdated {
+    
+    
+    [self.collectionView reloadData];
+    
+    NSLog(@"stockUpdated");
+    
 }
 
 #pragma mark <UICollectionViewDelegate>

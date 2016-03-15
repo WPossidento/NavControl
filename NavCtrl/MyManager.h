@@ -11,6 +11,14 @@
 #import "Product.h"
 #import "Company_MO.h"
 #import "Product_MO.h"
+#import "AFNetworking.h"
+
+@protocol MyManagerDelegate <NSObject>
+
+@optional
+- (void)stockUpdated;
+
+@end
 
 @interface MyManager : NSObject
 
@@ -22,9 +30,10 @@
 
 @property (nonatomic, retain) NSString *imagesPath;
 
+@property (nonatomic, retain) NSMutableArray *stocksFinal;
+
 + (id)sharedManager;
 
-//- (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
 - (void) createDataAtFirstLaunch;
@@ -38,5 +47,7 @@
 -(void) deleteProductFromCoreData: (NSUInteger) productIndex;
 
 -(void) undoLastAction;
+
+-(void) loadStocksTo: (NSTimer *) theTimer;
 
 @end

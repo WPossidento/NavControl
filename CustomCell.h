@@ -12,5 +12,6 @@
 @property (retain, nonatomic) IBOutlet UIImageView *imageView;
 @property (retain, nonatomic) IBOutlet UILabel *companyNameLabel;
 @property (retain, nonatomic) IBOutlet UIButton *deleteButton;
+@property (retain, nonatomic) IBOutlet UILabel *stockPrice;
 
 @end
